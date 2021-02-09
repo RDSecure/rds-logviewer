@@ -66,7 +66,7 @@ A continuación se muestran los
 
 La base de datos cuenta con 3 tablas:
 
-**RDSLogs: ** Esta tabla conguja la información que viene del WEV así como el evento del RDSG en sí.
+**RDSLogs:** Esta tabla conguja la información que viene del WEV así como el evento del RDSG en sí.
 
   `id, TimeCreated, TimeCreatedf, EventID, Level, EventRecordID, Computer, Origin_code` Son datos provenientes WEV
   `severely_key` Referencia local
@@ -94,4 +94,44 @@ CREATE TABLE `rdslogs` (
   CONSTRAINT `fk_RDSLogs_Origin` FOREIGN KEY (`Origin_code`) REFERENCES `origin` (`code`),
   CONSTRAINT `fk_RDSLogs_severely1` FOREIGN KEY (`severely_key`) REFERENCES `severely` (`key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=352 DEFAULT CHARSET=utf8;
+```
+**severely**
+
+Script para generar la tabla severely
+```sql
+CREATE TABLE `severely` (
+  `key` varchar(5) NOT NULL,
+  `NumValue` int DEFAULT NULL,
+  `Severity` varchar(20) DEFAULT NULL,
+  `Keyword` varchar(10) DEFAULT NULL,
+  `Description` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+```
+Dar de alta valores por default
+
+```sql
+INSERT INTO `severely` VALUES ('A',1,'Alert','alert','Action must be taken immediately'),('C',2,'Critical','crit','Critical conditions'),('D',7,'Debug','debug','Debug-level messages'),('E',0,'Emergency','emerg','	System is unusable'),('ER',3,'Error','err','Error conditions'),('I',6,'Informational','info','Informational messages'),('N',5,'Notice','notice','Normal but significant conditions'),('T',8,'unknow','unknow','unknow'),('W',4,'Warning','warning','Warning conditions');
+```
+**origin**
+Esta tabla diferencía la procedencia de los logs que vienen del RDSG:
+**Administration Access** Los provenientes del portar de Administración (puerto 10000)
+***Statics** estadísticas generales de la aplicación
+**User Portal**: Logs provenientes del portal del usuario
+```sql
+CREATE TABLE `origin` (
+  `code` varchar(10) NOT NULL,
+  `Name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `origin`
+--
+
+LOCK TABLES `origin` WRITE;
+/*!40000 ALTER TABLE `origin` DISABLE KEYS */;
+INSERT INTO `origin` VALUES ('AdminA','Administration Access'),('Statics','Statics'),('UserP','User Portal');
 ```

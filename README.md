@@ -18,6 +18,10 @@ Uno de los principales problemas que nos enfrentamos son:
  - Es muy complicado "peinar" los logs en tiempo de ejecución directamente desde el WEV.
  - Se requiere un análisis de usuarios.
  - Enviar los datos del WEV hacía una base de datos para su posterior integración con otros reporteadores.
+ 
+## Por hacer (TODO)
+- Crear la aplicación para que funcione como servicio de Windows.
+- Cr
 
 ## Lista de comandos para la aplicación RDS-LogViewer-Console
 Aunque la aplicación funciona bastante bien en Single Mode, se requiere integrar elementos que permitan un mejor manejo de la información mostrada. A continuación se enumeran una lista de deseos de comandos.
@@ -25,10 +29,10 @@ Aunque la aplicación funciona bastante bien en Single Mode, se requiere integra
     Forma de uso:
       rdslogviewer {comandos}
     Comandos
-             --config                 Especifica un archivo de configuración por defecto,
+                --config              Especifica un archivo de configuración por defecto,
                                       dónde se podrán definir valores por default para
                                       conexiones recurrentes.
-	    --console=bool            True:Ejecuta el programa en modo consola.
+	        --console=bool        True:Ejecuta el programa en modo consola.
                                       False: Ejecuta el programa en forma gráfica (no implementado)
 		--usedb=bool          infica que almacenaremos los datos en una base de datos.
                                       Esto es útil si se requiere enviar la información a una
@@ -38,7 +42,11 @@ Aunque la aplicación funciona bastante bien en Single Mode, se requiere integra
 		--dbschema=String     Base de datos/Schema de rdslog (requiere --usedb)
 		--dbuser=String       Usuario de la base de datos (requiere --usedb)
 		--dbpassword=String   Contraseña del usuario de la base de datos (requiere --usedb)
-                --help               Ayuda
+=========================================================================================================
+                --install             Instala el servicio de Windows
+		--uninstall           Desinstala el servicio de Windows 
+=========================================================================================================
+                --help                Ayuda
     
     Aunadamente se podría usar el comando
     

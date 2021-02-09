@@ -25,20 +25,20 @@ Aunque la aplicación funciona bastante bien en Single Mode, se requiere integra
     Forma de uso:
       rdslogviewer {comandos}
     Comandos
-	    --config            Especifica un archivo de configuración por defecto,
-                          dónde se podrán definir valores por default para
-                          conexiones recurrentes.
-	    --console=bool			True:Ejecuta el programa en modo consola.
-                          False: Ejecuta el programa en forma gráfica (no implementado)
+             --config                 Especifica un archivo de configuración por defecto,
+                                      dónde se podrán definir valores por default para
+                                      conexiones recurrentes.
+	    --console=bool            True:Ejecuta el programa en modo consola.
+                                      False: Ejecuta el programa en forma gráfica (no implementado)
 		--usedb=bool          infica que almacenaremos los datos en una base de datos.
-                          Esto es útil si se requiere enviar la información a una
-                          DB diferente o de pruebas.
+                                      Esto es útil si se requiere enviar la información a una
+                                      DB diferente o de pruebas.
 		--dbhost=String       Dirección del servidor de la base de datos (requiere --usedb)			
 		--dbport=Integer      Puerto del servidor de la base de datos (requiere --usedb)
 		--dbschema=String     Base de datos/Schema de rdslog (requiere --usedb)
 		--dbuser=String       Usuario de la base de datos (requiere --usedb)
-		--dbpassword=String		Contraseña del usuario de la base de datos (requiere --usedb)
-    --help                Ayuda
+		--dbpassword=String   Contraseña del usuario de la base de datos (requiere --usedb)
+                --help               Ayuda
     
     Aunadamente se podría usar el comando
     

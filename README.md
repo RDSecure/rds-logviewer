@@ -58,5 +58,40 @@ Debido a que esta aplicación será parte de la Suit del RDS, se requerirá esta
     dbuser=rdsuser
     dbpassword={strong_password}
 ```
+## Base de datos
+### Estructura de base la base de datos.
+A continuación se muestran los 
 
-asas
+![image](https://user-images.githubusercontent.com/30660343/107375508-19efc400-6ae9-11eb-8726-0a2922fb1c04.png)
+
+La base de datos cuenta con 3 tablas:
+
+**RDSLogs: ** Esta tabla conguja la información que viene del WEV así como el evento del RDSG en sí.
+
+  `id, TimeCreated, TimeCreatedf, EventID, Level, EventRecordID, Computer, Origin_code` Son datos provenientes WEV
+  `severely_key` Referencia local
+  `code, SNO, INETA, messaje, rdsContent` Información que viene de los logs del RDSG
+Script para crear la tabla rdslogs
+```sql
+CREATE TABLE `rdslogs` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `TimeCreated` varchar(30) DEFAULT NULL,
+  `TimeCreatedf` datetime DEFAULT NULL,
+  `EventID` int DEFAULT NULL,
+  `Level` int DEFAULT NULL,
+  `EventRecordID` int DEFAULT NULL,
+  `Computer` varchar(45) DEFAULT NULL,
+  `Origin_code` varchar(10) NOT NULL,
+  `severely_key` varchar(45) NOT NULL,
+  `code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `SNO` varchar(45) DEFAULT NULL,
+  `INETA` varchar(45) DEFAULT NULL,
+  `messaje` text,
+  `rdsContent` text,
+  PRIMARY KEY (`id`),
+  KEY `fk_RDSLogs_Origin_idx` (`Origin_code`),
+  KEY `fk_RDSLogs_severely1_idx` (`severely_key`),
+  CONSTRAINT `fk_RDSLogs_Origin` FOREIGN KEY (`Origin_code`) REFERENCES `origin` (`code`),
+  CONSTRAINT `fk_RDSLogs_severely1` FOREIGN KEY (`severely_key`) REFERENCES `severely` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=352 DEFAULT CHARSET=utf8;
+```

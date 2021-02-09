@@ -20,8 +20,8 @@ Uno de los principales problemas que nos enfrentamos son:
  - Enviar los datos del WEV hacía una base de datos para su posterior integración con otros reporteadores.
  
 ## Por hacer (TODO)
-- Crear la aplicación para que funcione como servicio de Windows.
-- Cr
+- Crear la aplicación para que funcione como servicio de Windows. (actualmente ya se tiene el procedimiento interno, solo hace falta la adaptación dependiendo de los parámetros de la aplicación o archivo de configuración)
+- Crear el script/procedimeinto para instalar, desinstalar el servicio.
 
 ## Lista de comandos para la aplicación RDS-LogViewer-Console
 Aunque la aplicación funciona bastante bien en Single Mode, se requiere integrar elementos que permitan un mejor manejo de la información mostrada. A continuación se enumeran una lista de deseos de comandos.

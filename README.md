@@ -12,6 +12,9 @@ El RDSG, al momento de la instalación crea una entrada especial en el Windows E
 | RDSG | RDSGateway/WSP |
 |  |  |
 
+![image](https://user-images.githubusercontent.com/30660343/125528279-fa42935f-8e41-4ac6-b6b8-861ff3c78d9b.png)
+
+
 ## Problemática
 Uno de los principales problemas que nos enfrentamos son:
 

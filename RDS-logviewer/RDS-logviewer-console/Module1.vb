@@ -6,50 +6,113 @@ Imports System.Data.Sql
 Imports rdslib
 Imports System.Net
 Imports System
+Imports System.Deployment
 
 Module Module1
-    Dim xml As String = String.Empty
-    Dim speed As String = String.Empty
-    Dim CONSOLEMODE As Boolean = True
-    Dim GUIMODE As Boolean = True
-    Dim DEBUGMODE As Boolean = True
-    Dim ALLE As Boolean = False ' Envía todos los eventos
-    Dim propsFilename As String = String.Empty
-    Dim SaveIntoMySQL As Boolean = False
+    'Dim xml As String = String.Empty
+    Public CONSOLEMODE As Boolean = False       ' Manda los mensajes a la salida de la consola
+    Public GUIMODE As Boolean = True            ' Habilita el modo gráfico de la aplicación: TODO
+    Public DEBUGMODE As Boolean = False         ' Habilita el modo de debug dónde manda los mensajes
+    Public CONFIG_FILE As String = ""           ' El archivo de configucación de la aplicación 
+    Public USESQL As Boolean = False            ' Guarda la salida de los datos en una base de datos
+    Public dbhost As String = ""                ' la dirección de la base de datos
+    Public dbusername As String = ""            ' el usuario de la base de datos
+    Public dbpassword As String = ""            ' contraseña del usuario de la base de datos
+    Public dbschema As String = ""              ' e nombre del esqueme
+    Public dbport As String = "389"             ' el puerto del servicio de la base de datos
+    Public dbotherOptions As String = ""        ' Otras opciones para la base de datos
+    Public READ_EV As String = ""               ' Archivo XML de los eventos 
+    Public RUN_AS_SERVICE As Boolean = False
+    Public ConnectionStr As String = ""
 
-    Sub Main()
-        'debugProg()
-        setComandLineParameters()
-        setVariablesAndConstructors()
 
-        Dim cki As ConsoleKeyInfo
 
-        'Dim clArgs() As String = Environment.GetCommandLineArgs()
-
+    Sub readEventViewer()
         Dim query As New EventLogQuery("HOB WebSecureProxy", PathType.LogName)
         Dim watcher As New EventLogWatcher(query)
 
         AddHandler watcher.EventRecordWritten, AddressOf watcher_EventRecordWritten
         watcher.Enabled = True
+        Console.ReadLine()
 
-        REM Console.ReadLine()
-        Console.Write("Press 'X' to quit, or ")
-        Console.WriteLine("CTRL+C to interrupt the read operation:")
-        AddHandler Console.CancelKeyPress, AddressOf myHandler
-        While True
-            ' Start a console read operation. Do not display the input.
-            cki = Console.ReadKey(True)
 
-            If cki.Key = ConsoleKey.Enter Then
-                Console.WriteLine("")
+    End Sub
+
+    Private Function DBConnectionStatus() As Boolean
+        Try
+            Using sqlConn As New MySqlConnection(ConnectionStr)
+                sqlConn.Open()
+                Return (sqlConn.State = ConnectionState.Open)
+            End Using
+        Catch e1 As MySqlException
+            Console.WriteLine(e1.Message)
+            Return False
+        Catch e2 As Exception
+            Console.WriteLine(e2.Message)
+            Return False
+        End Try
+    End Function
+
+    Sub main()
+        If getArguments(Environment.GetCommandLineArgs()) Then
+            If USESQL Then
+                ConnectionStr = "Server=" & dbhost & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
+                If DBConnectionStatus() = False Then
+                    Console.WriteLine("Verifique la conexión a la base de datos")
+                    Exit Sub
+                End If
+            End If
+            If String.IsNullOrEmpty(READ_EV) = False Then
+                If File.Exists(READ_EV) Then
+                    readEventFromFile(READ_EV)
+                Else
+                    Console.WriteLine("El archivo " & READ_EV & " no existe")
+                End If
             Else
-                Console.Write(cki.Key.ToString())
+                readEventViewer()
+            End If
+        End If
+    End Sub
+
+
+
+    ''' <summary>
+    ''' read the events from a XML file
+    ''' </summary>
+    ''' <param name="xml_fileName">the XML file with complete path</param>
+    Sub readEventFromFile(xml_fileName As String)
+        ' https://www.vbforums.com/showthread.php?824713-RESOLVED-Loop-through-XML-File
+
+        Dim xmldoc As New XmlDataDocument()
+        Dim xmlnode As XmlNodeList
+        Dim i As Integer
+        Dim fs As New FileStream(xml_fileName, FileMode.Open, FileAccess.Read)
+        xmldoc.Load(fs)
+        xmlnode = xmldoc.GetElementsByTagName("Event")
+
+        Dim header As String = "<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>"
+        Dim tail As String = "</Event>"
+
+        For i = 0 To xmlnode.Count - 1
+            Dim xml1 As String = "<System>" & xmlnode(i).ChildNodes.Item(0).InnerXml.Replace(" xmlns=""http://schemas.microsoft.com/win/2004/08/events/event""", "") & "</System>"
+            Dim xml2 As String = "<EventData>" & xmlnode(i).ChildNodes.Item(1).InnerXml.Replace(" xmlns=""http://schemas.microsoft.com/win/2004/08/events/event""", "") & "</EventData>"
+            Dim xml_end As String = header & xml1 & xml2 & tail
+            GenerateEvents(xml_end)
+            If DEBUGMODE Then
+                System.Threading.Thread.Sleep(10)
             End If
 
-            If cki.Key = ConsoleKey.X Then Exit While
-        End While
+        Next
+
+        fs.Close()
+        fs = Nothing
+        xmlnode = Nothing
+        xmldoc = Nothing
+
+
     End Sub
-    Sub myHandler(ByVal sender As Object, ByVal args As ConsoleCancelEventArgs)
+
+    Sub _myHandler(ByVal sender As Object, ByVal args As ConsoleCancelEventArgs)
         Console.WriteLine(vbLf & "The read operation has been interrupted.")
         Console.WriteLine($"  Key pressed: {args.SpecialKey}")
         Console.WriteLine($"  Cancel property: {args.Cancel}")
@@ -57,14 +120,8 @@ Module Module1
         Console.WriteLine($"  Cancel property: {args.Cancel}")
         Console.WriteLine("The read operation will resume..." & vbLf)
     End Sub
-    Sub setVariablesAndConstructors()
-
-    End Sub
-
 
     Public Sub watcher_EventRecordWritten(sender As Object, e As EventRecordWrittenEventArgs)
-        'Console.WriteLine(e.EventRecord.ToXml())s
-        'Dim filename As String = "C: \rdsecure\temp\event-" & GenerateGUID() & ".xml"
         GenerateEvents(e.EventRecord.ToXml())
     End Sub
 
@@ -81,6 +138,10 @@ Module Module1
         Dim tmp As String = String.Empty
 
         Data = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/EventData", "Data")
+
+        If Data.Equals(Nothing) Then
+            Exit Sub
+        End If
 
         ' el el mensaje DATA contiene la cadena "connection ended - client ended with error" ignoramoes el mensaje.HWSPS06
         ' este mensaje no es relevante para el análisis y causa mucho ruido. Y no tiene caso gastar recursos de 
@@ -153,17 +214,21 @@ Module Module1
                 If messaje.StartsWith(" ") Then
                     messaje = messaje.Substring(1)
                 End If
-                If SaveIntoMySQL Then
+                If USESQL Then
                     mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, SNO, INETA, messaje, Data)
                 End If
-
             Else
                 'HWSPR002I Report Performance / elapsed CPU time 34 sec / virt-stor 61GB / I-O 153 1649KB.
                 Dim posicion As Integer = Data.IndexOf(" ")
                 code = Data.Substring(0, posicion)
                 severely_key = Right(code, 1).ToUpper
+
+                If severely_key.Equals(vbLf) Then
+                    severely_key = "I"
+                End If
+
                 messaje = Data.Substring(posicion)
-                If SaveIntoMySQL Then
+                If USESQL Then
                     mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, "", "", messaje, Data)
                 End If
             End If
@@ -171,14 +236,13 @@ Module Module1
             Dim posicion As Integer = Data.IndexOf(" ")
             code = Data.Substring(0, posicion)
             messaje = Data.Substring(posicion)
-            If SaveIntoMySQL Then
+            If USESQL Then
                 mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, "Statics", "I", code, "", "", messaje, Data)
             End If
         End If
 
         If CONSOLEMODE Then
             Dim color As ConsoleColor
-
             If Data.Contains("GATE=Administration Access") Then
                 color = ConsoleColor.Yellow
             ElseIf Data.Contains("GATE=User Portal") Then
@@ -210,21 +274,20 @@ Module Module1
     Sub mio(TimeCreated As String, TimeCreatedf As DateTime, EventID As Integer, LEVEL As Integer, EventRecordID As Integer, Computer As String,
             Origin_code As String, severely_key As String, code As String, SNO As String, INETA As String, messaje As String, rdsContent As String)
 
+        If EventID = 13 Then
+            Dim asd As String = ""
+        End If
+
         Dim conn As New MySqlConnection
         Dim com As New MySqlCommand
-        conn.ConnectionString = "Server=localhost; User Id=root; Password=p123p123; Database=rdsecurelogs"
+        conn.ConnectionString = ConnectionStr
 
         Dim MysqlConn = New MySqlConnection
         Try
-
             conn.Open()
             com.Connection = conn
             com.CommandText = "INSERT INTO rdslogs (TimeCreated, TimeCreatedf, EventID, `Level`, EventRecordID, Computer, Origin_code, severely_key, code, SNO, INETA, messaje, rdsContent) VALUES " &
                 "(@vTimeCreated, @vTimeCreatedf, @vEventID, @vLevel, @vEventRecordID, @vComputer, @vOrigin_code, @vseverely_key, @vcode, @vSNO, @vINETA, @vmessaje, @vrdsContent);"
-
-            'com.CommandText = "INSERT INTO rdslogs (TimeCreated, TimeCreatedf, EventID, `Level`, EventRecordID, Computer, Origin_code, severely_key, code, SNO, INETA, messaje, rdsContent) VALUES " &
-            '   "(@v1, @v2, @v3, @v4, @v5, @v6, @v7, @v8, @v9, @v10, @v11, @v12, @v13);"
-
 
             com.Parameters.Add("@vTimeCreated", MySqlDbType.VarString)
             com.Parameters.Add("@vTimeCreatedf", MySqlDbType.DateTime)
@@ -255,10 +318,17 @@ Module Module1
             com.Parameters("@vINETA").Value = INETA
             com.Parameters("@vmessaje").Value = messaje
             com.Parameters("@vrdsContent").Value = rdsContent
+
+
+
             com.ExecuteNonQuery()
+
+
         Catch ex As MySqlException
 
             Dim text As String = com.CommandText
+            Console.WriteLine("===== Query ======")
+            Console.WriteLine(text)
             Console.WriteLine("===== Error ======")
             Console.WriteLine(ex)
             Console.WriteLine("===== SQL Error ======")
@@ -270,161 +340,6 @@ Module Module1
             MysqlConn.Close()
             MysqlConn.Dispose()
         End Try
-    End Sub
-
-    Sub mio2(TimeCreated As String, TimeCreatedf As DateTime, EventID As Integer, LEVEL As Integer, EventRecordID As Integer, Computer As String,
-            Origin_code As String, severely_key As String, code As String, SNO As String, INETA As String, messaje As String, rdsContent As String)
-
-        Dim conn As New MySqlConnection
-        Dim com As New MySqlCommand
-        conn.ConnectionString = "Server=localhost; User Id=root; Password=p123p123; Database=rdsecurelogs"
-
-        Dim MysqlConn = New MySqlConnection
-        Try
-            conn.Open()
-            com.Connection = conn
-
-            com.CommandText = "INSERT INTO rdslogs (TimeCreated, TimeCreatedf, EventID, `Level`, EventRecordID, Computer, Origin_code, severely_key, code, SNO, INETA, messaje, rdsContent) VALUES " &
-                "(@vTimeCreated, @vTimeCreatedf, @vEventID, @vLevel, @vEventRecordID, @vComputer, @vOrigin_code, @vseverely_key, @vcode, @vSNO, @vINETA, @vmessaje, @vrdsContent);"
-
-            'com.CommandText = "INSERT INTO rdslogs (TimeCreated, TimeCreatedf, EventID, `Level`, EventRecordID, Computer, Origin_code, severely_key, code, SNO, INETA, messaje, rdsContent) VALUES " &
-            '   "(@v1, @v2, @v3, @v4, @v5, @v6, @v7, @v8, @v9, @v10, @v11, @v12, @v13);"
-
-
-            com.Parameters.Add("@vTimeCreated", MySqlDbType.VarString)
-            com.Parameters.Add("@vTimeCreatedf", MySqlDbType.DateTime)
-            com.Parameters.Add("@vEventID", MySqlDbType.Int16)
-            com.Parameters.Add("@vLevel", MySqlDbType.Int16)
-            com.Parameters.Add("@vEventRecordID", MySqlDbType.Int16)
-            com.Parameters.Add("@vComputer", MySqlDbType.VarString)
-            com.Parameters.Add("@vOrigin_code", MySqlDbType.VarString)
-            com.Parameters.Add("@vseverely_key", MySqlDbType.VarString)
-            com.Parameters.Add("@vcode", MySqlDbType.VarString)
-            com.Parameters.Add("@vSNO", MySqlDbType.VarString)
-            com.Parameters.Add("@vINETA", MySqlDbType.VarString)
-            com.Parameters.Add("@vmessaje", MySqlDbType.VarString)
-            com.Parameters.Add("@vrdsContent", MySqlDbType.VarString)
-            com.Prepare()
-            '' Agregamos los valores a los parametros antes dichos
-
-            com.Parameters("@vTimeCreated").Value = TimeCreated
-            com.Parameters("@vTimeCreatedf").Value = TimeCreatedf.ToString("yyyy-MM-dd HH:mm:ss")
-            com.Parameters("@vEventID").Value = EventID
-            com.Parameters("@vLevel").Value = LEVEL
-            com.Parameters("@vEventRecordID").Value = EventRecordID
-            com.Parameters("@vComputer").Value = Computer
-            com.Parameters("@vOrigin_code").Value = Origin_code
-            com.Parameters("@vseverely_key").Value = severely_key
-            com.Parameters("@vcode").Value = code
-            com.Parameters("@vSNO").Value = SNO
-            com.Parameters("@vINETA").Value = INETA
-            com.Parameters("@vmessaje").Value = messaje
-            com.Parameters("@vrdsContent").Value = rdsContent
-
-            com.ExecuteNonQuery()
-
-
-
-        Catch ex As MySqlException
-
-            Dim text As String = com.CommandText
-
-            Console.WriteLine("===== Error ======")
-            Console.WriteLine(ex)
-            Console.WriteLine("===== SQL Error ======")
-            Console.WriteLine(ex.StackTrace)
-            Console.WriteLine("===== ERW Error ======")
-            Console.WriteLine(com.CommandText)
-            Console.WriteLine("")
-
-        Finally
-            MysqlConn.Close()
-            MysqlConn.Dispose()
-
-        End Try
-
-
-
-    End Sub
-
-    Sub GenerateEvents2(xmlcontent As String)
-        ' cambiamos la comilla a comillas dobles
-        ' TODO: Reparar las comillas, al pareccer tanto la sencilla como las dobles son legales, si es asüi
-        ' ahorraríamos valiosísimos milisegundos
-        xmlcontent = xmlcontent.Replace("'", """")
-        ' eliminaos el xmlns de xml porque me estaba dando problemas
-        xmlcontent = xmlcontent.Replace(" xmlns=""http://schemas.microsoft.com/win/2004/08/events/event""", "")
-        Dim sqlquery As String = ""
-        Dim EventID, Keywords, Computer, Data, Provider, SystemTime, EventRecordID, Level As String
-        Dim TimeCreatedf As Date
-
-        Data = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/EventData", "Data")
-
-        If (Data.Contains("HWSPR004I") = False) Then
-            'If (Data.Contains("connection ended - client ended with error") = False) Then
-            '
-            ' el el mensaje DATA contiene la cadena "connection ended - client ended with error" ignoramoes el mensaje.
-            ' este mensaje no es relevante para el análisis y causa mucho ruido. Y no tiene caso gastar recursos de 
-            ' memoria y CPU para analizar el XML
-            EventID = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "EventID")
-            Keywords = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "Keywords")
-            Computer = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "Computer")
-            EventRecordID = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "EventRecordID")
-            Level = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "Level")
-
-            Provider = rdslib.xmlhelper.GetContinents(xmlcontent, "//System//Provider", "Name")
-            SystemTime = rdslib.xmlhelper.GetContinents(xmlcontent, "//System//TimeCreated", "SystemTime")
-
-            TimeCreatedf = Convert.ToDateTime(SystemTime)
-
-            Console.WriteLine(TimeCreatedf.ToString("yyyy-MM-dd HH:mm:ss"))
-            Console.WriteLine(TimeCreatedf.ToString())
-
-            If CONSOLEMODE Then
-                colorize("====================CONTENT " & EventRecordID & " ====================", ConsoleColor.Magenta)
-                colorize(xmlcontent & vbNewLine, ConsoleColor.DarkGray)
-                colorize("Provider     : " & Provider, ConsoleColor.Yellow)
-                colorize("TimeCreated  : " & SystemTime, ConsoleColor.Yellow)
-                colorize("EventID      : " & EventID, ConsoleColor.Yellow)
-                colorize("Level        : " & Level, ConsoleColor.Yellow)
-                colorize("Keywords     : " & Keywords, ConsoleColor.Yellow)
-                colorize("EventRecordID: " & EventRecordID, ConsoleColor.Yellow)
-                colorize("Computer     : " & Computer, ConsoleColor.Yellow)
-                colorize("====================HOB Content messaje " & EventRecordID & " ====================", ConsoleColor.Magenta)
-
-                If Data.Contains("logged on") Then
-                    ' si la cadena contiene logged on lo coloreamos de verde
-                    colorize("Data         : " & Data, ConsoleColor.Green)
-                ElseIf Data.Contains("ldap authentication failed") Then
-                    ' si la cadena contiene ldap authentication failed on lo coloreamos de rojo
-                    colorize("Data         : " & Data, ConsoleColor.Red)
-                ElseIf Data.Contains("SSL") Then
-                    ' si la cadena contiene ldap authentication failed on lo coloreamos de rojo
-                    colorize("Data         : " & Data, ConsoleColor.Blue)
-                ElseIf Data.Contains("HOB") Then
-
-                Else
-                    colorize("Data         : " & Data, ConsoleColor.Gray)
-                    'set session owner group
-                    'logged on
-                    '
-                    '
-                    'connection ended - client ended with error
-                End If
-            End If
-        End If
-    End Sub
-
-    Sub debugProg()
-        Dim filename As String = "C:\rdsecure\temp\event-1b286456-0731-41b9-bbb2-6329bf39405e.xml"
-        'Dim xmlcontent As String = e.EventRecord.ToXml().Replace("'", """")
-        'crearArchivo(filename, xmlcontent)
-
-        Dim xmldoc As New XmlDocument
-        xmldoc.Load(filename)
-        Dim xmlcontent = xmldoc.InnerXml
-
-        GenerateEvents(xmlcontent)
     End Sub
 
     Sub colorize(mensaje As String, color As ConsoleColor)
@@ -440,97 +355,8 @@ Module Module1
         Console.ResetColor()
     End Sub
 
-
 #Region "Testing"
-    Sub setComandLineParameters()
-        ' Get the values of the command line in an array
-        ' Index  Discription
-        ' 0      Full path of executing prograsm with program name
-        ' 1      First switch in command in your example -t
-        ' 2      First value in command in your example text1
-        ' 3      Second switch in command in your example -s
-        ' 4      Second value in command in your example text2
-        Dim clArgs() As String = Environment.GetCommandLineArgs()
-        ' Hold the command line values
-        Dim config As String = String.Empty
-        Dim user As String = String.Empty
-        Dim Console As Boolean = True
-        ' Test to see if two switchs and two values were passed in
-        ' if yes parse the array
 
-        If clArgs.Length > 1 Then
-            For i As Integer = 1 To clArgs.Length - 1
-
-                If (clArgs(i) = "-c") Or (clArgs(i).Contains("--config")) Then
-                    config = clArgs(i + 1)
-
-                    If String.IsNullOrEmpty(config) Then
-                        config = "default.cfg"
-                    End If
-                ElseIf (clArgs(i).Contains("--console")) Then
-                    Console = clArgs(i + 1)
-                ElseIf (clArgs(i) = "-u") Or (clArgs(i).Contains("--user")) Then
-                    user = clArgs(i + 1)
-                End If
-            Next
-        Else
-            cons2()
-        End If
-    End Sub
-
-    Sub configWizard()
-
-        Dim db_host As String
-        Dim db_user As String
-        Dim db_user_password As String
-        Dim db_schema As String
-
-        Console.WriteLine("Se creó el archivo default.cfg")
-        Console.Write("Servidor de la base de datos: ")
-        db_host = Console.Read
-
-        Console.Write("Usuario de la base de datos: ")
-        db_user = Console.Read
-
-        Console.Write("Contraseña del usuario de la base de datos: ")
-        db_user_password = Console.Read
-
-        Console.Write("Esquema: ")
-        db_schema = Console.Read
-
-    End Sub
-    Sub cons2()
-        Console.WriteLine("EventLog2db")
-        Console.WriteLine("")
-        Console.WriteLine("No se ha establedico un archivo de configuración en la linea de comandos")
-        Console.WriteLine("¿Quiere ejecutar el programa solo como lectura de logs?")
-        Console.WriteLine("No se guardarán los cambios en ninguna base de datos.")
-
-        Console.Write("(S)i / (N)o: ")
-
-        Dim response As ConsoleKey
-        response = Console.ReadKey(False).Key
-
-        If response = ConsoleKey.Y Then
-
-
-        End If
-        If response = ConsoleKey.N Then
-            End
-        End If
-
-
-        Console.WriteLine("")
-    End Sub
-    Sub usage()
-        Console.WriteLine("EventLog2db (OPTIONS)")
-        Console.WriteLine("=============================")
-        Console.WriteLine("-c" & vbTab & "--config" & vbTab & "Ruta para el archivo de configuracion")
-        Console.WriteLine("-u" & vbTab & "--user" & vbTab & "Database username")
-        Console.WriteLine("-p" & vbTab & "--password" & vbTab & "Database username password")
-        Console.WriteLine("-db" & vbTab & "--database" & vbTab & "Database")
-        Console.WriteLine("EventLog2db")
-    End Sub
 
 #End Region
 End Module

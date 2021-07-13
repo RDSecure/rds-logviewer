@@ -50,9 +50,6 @@
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\..\HOB-Coppel_Synchronizer\HOB-Coppel_tools\contrib\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="rdslib">
-      <HintPath>..\..\..\..\HOB-Coppel_Synchronizer\HOB-Coppel_tools\rdslib\bin\Release\rdslib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -76,6 +73,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLine.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -92,10 +90,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="RDS-logviewer-GUI.Designer.vb">
-      <DependentUpon>RDS-logviewer-GUI.vb</DependentUpon>
+    <Compile Include="RDS-logviewer-gui.Designer.vb">
+      <DependentUpon>RDS-logviewer-gui.vb</DependentUpon>
     </Compile>
-    <Compile Include="RDS-logviewer-GUI.vb">
+    <Compile Include="RDS-logviewer-gui.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -106,8 +104,8 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RDS-logviewer-GUI.resx">
-      <DependentUpon>RDS-logviewer-GUI.vb</DependentUpon>
+    <EmbeddedResource Include="RDS-logviewer-gui.resx">
+      <DependentUpon>RDS-logviewer-gui.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +119,12 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\HOB-Coppel_Synchronizer\HOB-Coppel_tools\rdslib\rdslib.vbproj">
+      <Project>{9b8c3465-fdbb-4213-a944-6aab4979d407}</Project>
+      <Name>rdslib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

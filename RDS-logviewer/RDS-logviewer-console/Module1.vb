@@ -35,7 +35,6 @@ Module Module1
         watcher.Enabled = True
         Console.ReadLine()
 
-
     End Sub
 
     Private Function DBConnectionStatus() As Boolean
@@ -73,7 +72,6 @@ Module Module1
             End If
         End If
     End Sub
-
 
 
     ''' <summary>

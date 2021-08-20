@@ -28,12 +28,18 @@ Module Module1
 
 
     Sub readEventViewer()
-        Dim query As New EventLogQuery("HOB WebSecureProxy", PathType.LogName)
-        Dim watcher As New EventLogWatcher(query)
+        Try
+            Dim query As New EventLogQuery("HOB WebSecureProxy", PathType.LogName)
+            Dim watcher As New EventLogWatcher(query)
 
-        AddHandler watcher.EventRecordWritten, AddressOf watcher_EventRecordWritten
-        watcher.Enabled = True
-        Console.ReadLine()
+            AddHandler watcher.EventRecordWritten, AddressOf watcher_EventRecordWritten
+            watcher.Enabled = True
+            Console.ReadLine()
+
+        Catch ex As Exception
+            Console.WriteLine(ex.Message)
+
+        End Try
 
     End Sub
 
@@ -55,7 +61,7 @@ Module Module1
     Sub main()
         If getArguments(Environment.GetCommandLineArgs()) Then
             If USESQL Then
-                ConnectionStr = "Server=" & dbhost & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
+                ConnectionStr = "Server=" & dbhost & "; Port= " & dbport & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
                 If DBConnectionStatus() = False Then
                     Console.WriteLine("Verifique la conexión a la base de datos")
                     Exit Sub
@@ -131,7 +137,7 @@ Module Module1
         ' eliminaos el xmlns de xml porque me estaba dando problemas
         xmlcontent = xmlcontent.Replace(" xmlns=""http://schemas.microsoft.com/win/2004/08/events/event""", "")
 
-        Dim Keywords, Computer, Data, Provider, SystemTime, OriginCode, severely_key, code, SNO, INETA, messaje As String
+        Dim Keywords, Computer, Data, Provider, SystemTime, OriginCode, severely_key, code, SNO, INETA, message, group, userid, protocol, socket As String
         Dim EventID, Level, EventRecordID As Integer
         Dim tmp As String = String.Empty
 
@@ -170,7 +176,8 @@ Module Module1
         SystemTime = rdslib.xmlhelper.GetContinents(xmlcontent, "//System//TimeCreated", "SystemTime")
         Dim TimeCreatedf As Date = Convert.ToDateTime(SystemTime)
 
-        'cadenaMensaje = "HWSPS062I GATE=Administration Access SNO=00000262 INETA=::1 display: HAUTHW034W unknown authentication failed for userid=dadmin with error 'cannot find a valid auth method'"
+
+
         If Data.Contains("HWSP") Then
             If Data.Contains("Administration Access") Then
                 OriginCode = "AdminA"
@@ -208,12 +215,33 @@ Module Module1
                 INETA = tmp.Substring(0, posicion)
                 INETA = INETA.Replace("INETA=", "")
 
-                messaje = tmp.Substring(posicion)
-                If messaje.StartsWith(" ") Then
-                    messaje = messaje.Substring(1)
+                message = tmp.Substring(posicion)
+                If message.StartsWith(" ") Then
+                    message = message.Substring(1)
                 End If
+
+
+                If Data.Contains("HOB-RDP-EXT1") Then
+                    protocol = "HOB-RDP-EXT1"
+                    socket = Data.Substring(Data.LastIndexOf(" ") + 1)
+                Else
+                    protocol = ""
+                    socket = ""
+                End If
+
+                If Data.Contains("set session owner group=") Then
+                    group = message.Replace("set session owner group=", "")
+                    Dim posision As Integer = group.IndexOf(" ")
+                    group = group.Remove(posision)
+                    userid = message.Substring(message.LastIndexOf(" ") + 8)
+                    userid = userid.Substring(0, userid.Length - 1)
+                Else
+                    group = ""
+                    userid = ""
+                End If
+
                 If USESQL Then
-                    mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, SNO, INETA, messaje, Data)
+                    mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, SNO, INETA, message, Data, group, userid, protocol, socket)
                 End If
             Else
                 'HWSPR002I Report Performance / elapsed CPU time 34 sec / virt-stor 61GB / I-O 153 1649KB.
@@ -225,17 +253,17 @@ Module Module1
                     severely_key = "I"
                 End If
 
-                messaje = Data.Substring(posicion)
+                message = Data.Substring(posicion)
                 If USESQL Then
-                    mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, "", "", messaje, Data)
+                    mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, "", "", message, Data, group, userid, protocol, socket)
                 End If
             End If
         Else
             Dim posicion As Integer = Data.IndexOf(" ")
             code = Data.Substring(0, posicion)
-            messaje = Data.Substring(posicion)
+            message = Data.Substring(posicion)
             If USESQL Then
-                mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, "Statics", "I", code, "", "", messaje, Data)
+                mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, "Statics", "I", code, "", "", message, Data, group, userid, protocol, socket)
             End If
         End If
 
@@ -270,11 +298,8 @@ Module Module1
         End If
     End Sub
     Sub mio(TimeCreated As String, TimeCreatedf As DateTime, EventID As Integer, LEVEL As Integer, EventRecordID As Integer, Computer As String,
-            Origin_code As String, severely_key As String, code As String, SNO As String, INETA As String, messaje As String, rdsContent As String)
-
-        If EventID = 13 Then
-            Dim asd As String = ""
-        End If
+            Origin_code As String, severely_key As String, code As String, SNO As String, INETA As String, message As String, rdsContent As String,
+            grouprds As String, userid As String, protocol As String, socket As String)
 
         Dim conn As New MySqlConnection
         Dim com As New MySqlCommand
@@ -284,8 +309,8 @@ Module Module1
         Try
             conn.Open()
             com.Connection = conn
-            com.CommandText = "INSERT INTO rdslogs (TimeCreated, TimeCreatedf, EventID, `Level`, EventRecordID, Computer, Origin_code, severely_key, code, SNO, INETA, messaje, rdsContent) VALUES " &
-                "(@vTimeCreated, @vTimeCreatedf, @vEventID, @vLevel, @vEventRecordID, @vComputer, @vOrigin_code, @vseverely_key, @vcode, @vSNO, @vINETA, @vmessaje, @vrdsContent);"
+            com.CommandText = "INSERT INTO rdslogs (TimeCreated, TimeCreatedf, EventID, `Level`, EventRecordID, Computer, Origin_code, severely_key, code, SNO, INETA, message, rdsContent, grouprds, userid, protocol, socket) VALUES " &
+                "(@vTimeCreated, @vTimeCreatedf, @vEventID, @vLevel, @vEventRecordID, @vComputer, @vOrigin_code, @vseverely_key, @vcode, @vSNO, @vINETA, @vmessage, @vrdsContent, @vgrouprds, @vuserid, @vprotocol, @vsocket);"
 
             com.Parameters.Add("@vTimeCreated", MySqlDbType.VarString)
             com.Parameters.Add("@vTimeCreatedf", MySqlDbType.DateTime)
@@ -298,8 +323,12 @@ Module Module1
             com.Parameters.Add("@vcode", MySqlDbType.VarString)
             com.Parameters.Add("@vSNO", MySqlDbType.VarString)
             com.Parameters.Add("@vINETA", MySqlDbType.VarString)
-            com.Parameters.Add("@vmessaje", MySqlDbType.VarString)
+            com.Parameters.Add("@vmessage", MySqlDbType.VarString)
             com.Parameters.Add("@vrdsContent", MySqlDbType.VarString)
+            com.Parameters.Add("@vgrouprds", MySqlDbType.VarString)
+            com.Parameters.Add("@vuserid", MySqlDbType.VarString)
+            com.Parameters.Add("@vprotocol", MySqlDbType.VarString)
+            com.Parameters.Add("@vsocket", MySqlDbType.VarString)
             com.Prepare()
             '' Agregamos los valores a los parametros antes dichos
 
@@ -314,9 +343,12 @@ Module Module1
             com.Parameters("@vcode").Value = code
             com.Parameters("@vSNO").Value = SNO
             com.Parameters("@vINETA").Value = INETA
-            com.Parameters("@vmessaje").Value = messaje
+            com.Parameters("@vmessage").Value = message
             com.Parameters("@vrdsContent").Value = rdsContent
-
+            com.Parameters("@vgrouprds").Value = grouprds
+            com.Parameters("@vuserid").Value = userid
+            com.Parameters("@vprotocol").Value = protocol
+            com.Parameters("@vsocket").Value = socket
 
 
             com.ExecuteNonQuery()

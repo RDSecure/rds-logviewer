@@ -48,7 +48,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data">
-      <HintPath>..\..\..\..\HOB-Coppel_Synchronizer\HOB-Coppel_tools\contrib\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\rds_tools\contrib\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Web">
+      <HintPath>..\..\..\rds_tools\contrib\MySql.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -121,7 +124,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\HOB-Coppel_Synchronizer\HOB-Coppel_tools\rdslib\rdslib.vbproj">
+    <ProjectReference Include="..\..\..\rds_tools\rdslib\rdslib.vbproj">
       <Project>{9b8c3465-fdbb-4213-a944-6aab4979d407}</Project>
       <Name>rdslib</Name>
     </ProjectReference>

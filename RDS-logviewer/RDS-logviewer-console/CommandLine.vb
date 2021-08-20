@@ -79,7 +79,7 @@
                     Catch ex As Exception
                         db_help("--dbotherOptions")
                     End Try
-                ElseIf (argumentos(i).Equals("--read_ev")) Then
+                ElseIf (argumentos(i).Equals("--eventviewer")) Then
                     Try
                         READ_EV = argumentos(i + 1)
                         If READ_EV.StartsWith("--") Then

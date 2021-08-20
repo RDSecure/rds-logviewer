@@ -60,6 +60,7 @@ Module Module1
 
     Sub main()
         If getArguments(Environment.GetCommandLineArgs()) Then
+
             If USESQL Then
                 ConnectionStr = "Server=" & dbhost & "; Port= " & dbport & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
                 If DBConnectionStatus() = False Then
@@ -355,7 +356,6 @@ Module Module1
 
 
         Catch ex As MySqlException
-
             Dim text As String = com.CommandText
             Console.WriteLine("===== Query ======")
             Console.WriteLine(text)

@@ -77,6 +77,19 @@ Module Module1
             Else
                 readEventViewer()
             End If
+
+            'Creamos el archivo de configuracion si no existe'
+
+            Dim path As String = "D:\prueba.ini"
+            'si no existe el archivo lo creamos '
+            If File.Exists(path) Then
+                Console.Write("El archivo ya existe")
+            Else
+                Dim fs As FileStream = File.Create(path)
+            End If
+            'ruta por cambiar'
+            path = My.Computer.FileSystem.ReadAllText("D:\prueba.ini")
+            Console.Write(path)
         End If
     End Sub
 

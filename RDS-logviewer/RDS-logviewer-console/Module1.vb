@@ -88,7 +88,7 @@ Module Module1
                 Dim fs As FileStream = File.Create(path)
             End If
             'ruta por cambiar'
-            path = My.Computer.FileSystem.ReadAllText("D:\prueba.ini")
+            path = My.Computer.FileSystem.ReadAllText("\config.ini")
             Console.Write(path)
         End If
     End Sub

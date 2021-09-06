@@ -7,10 +7,10 @@
                     Try
                         CONFIG_FILE = argumentos(i + 1)
                         If (CONFIG_FILE.StartsWith("--")) Then
-                            CONFIG_FILE = Environment.CurrentDirectory & "\default.cfg"
+                            CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
                         End If
                     Catch ex As Exception
-                        CONFIG_FILE = Environment.CurrentDirectory & "\default.cfg"
+                        CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
                     End Try
                 ElseIf argumentos(i).Equals("--help") Then
                     help()

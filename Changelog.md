@@ -1,5 +1,5 @@
 
-#Changelog
+# Changelog
 
 ## 03.09.2021 (Beta 1.0)
 - Se agregó el diseño del formulario donde introducirán puerto, usuario, contraseña, el host y el nombre de la base de datos.

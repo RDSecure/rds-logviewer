@@ -43,6 +43,7 @@ Partial Class ConfigINI
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.cancel = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -244,12 +245,22 @@ Partial Class ConfigINI
         Me.CheckBox1.Text = "Usar base de datos "
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
+        'cancel
+        '
+        Me.cancel.Location = New System.Drawing.Point(593, 317)
+        Me.cancel.Name = "cancel"
+        Me.cancel.Size = New System.Drawing.Size(209, 48)
+        Me.cancel.TabIndex = 60
+        Me.cancel.Text = "Button2"
+        Me.cancel.UseVisualStyleBackColor = True
+        '
         'ConfigINI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.ClientSize = New System.Drawing.Size(853, 482)
+        Me.Controls.Add(Me.cancel)
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.Label10)
@@ -298,4 +309,5 @@ Partial Class ConfigINI
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents cancel As System.Windows.Forms.Button
 End Class

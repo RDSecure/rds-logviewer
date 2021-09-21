@@ -8,6 +8,8 @@ Imports System.Net
 Imports System
 Imports System.Deployment
 
+
+
 Module Module1
     'Dim xml As String = String.Empty
     Public CONSOLEMODE As Boolean = False       ' Manda los mensajes a la salida de la consola
@@ -24,6 +26,8 @@ Module Module1
     Public READ_EV As String = ""               ' Archivo XML de los eventos 
     Public RUN_AS_SERVICE As Boolean = False
     Public ConnectionStr As String = ""
+
+    Dim INI As ConfigINI
 
 
 
@@ -61,6 +65,26 @@ Module Module1
     Sub main()
         If getArguments(Environment.GetCommandLineArgs()) Then
 
+
+            If getArguments(Environment.GetCommandLineArgs()) Then
+                If GUIMODE Then
+                    CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
+                    If File.Exists(CONFIG_FILE) Then
+                        INI = New ConfigINI()
+                        INI.ShowDialog()
+                        If INI.DialogResult = DialogResult.OK Then
+                            readEventViewer()
+                        Else
+
+                        End If
+                    Else
+                        File.Create(CONFIG_FILE)
+                        MsgBox("Se ha creado el archivo de configuracion")
+                    End If
+                End If
+            End If
+
+
             If USESQL Then
                 ConnectionStr = "Server=" & dbhost & "; Port= " & dbport & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
                 If DBConnectionStatus() = False Then
@@ -78,18 +102,6 @@ Module Module1
                 readEventViewer()
             End If
 
-            'Creamos el archivo de configuracion si no existe'
-
-            Dim path As String = "D:\prueba.ini"
-            'si no existe el archivo lo creamos '
-            If File.Exists(path) Then
-                Console.Write("El archivo ya existe")
-            Else
-                Dim fs As FileStream = File.Create(path)
-            End If
-            'ruta por cambiar'
-            path = My.Computer.FileSystem.ReadAllText("\config.ini")
-            Console.Write(path)
         End If
     End Sub
 

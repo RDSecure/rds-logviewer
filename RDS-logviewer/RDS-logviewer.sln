@@ -7,6 +7,13 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RDS-logviewer-console", "RD
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "rdslib", "..\..\rds_tools\rdslib\rdslib.vbproj", "{9B8C3465-FDBB-4213-A944-6AAB4979D407}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9FF4C9C4-72EF-4671-B215-BF9E89EA087A}"
+	ProjectSection(SolutionItems) = preProject
+		D:\PruebasRDSecure\PruebasRDSecure\Service1.Designer.vb = D:\PruebasRDSecure\PruebasRDSecure\Service1.Designer.vb
+		D:\PruebasRDSecure\PruebasRDSecure\Service1.resx = D:\PruebasRDSecure\PruebasRDSecure\Service1.resx
+		D:\PruebasRDSecure\PruebasRDSecure\Service1.vb = D:\PruebasRDSecure\PruebasRDSecure\Service1.vb
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

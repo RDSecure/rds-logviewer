@@ -2,6 +2,17 @@
 Imports System.Text
 
 Public Class ConfigINI
+    Sub New()
+
+        ' Esta llamada es exigida por el diseñador.
+        InitializeComponent()
+        Button3.DialogResult = DialogResult.OK
+
+        cancel.DialogResult = DialogResult.Cancel
+        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+
+    End Sub
+
     <DllImport("kernel32.dll", SetLastError:=True)>
     Private Shared Function GetPrivateProfileString(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As StringBuilder, ByVal nSize As Integer, ByVal lpFileName As String) As Integer
     End Function
@@ -20,16 +31,20 @@ Public Class ConfigINI
         WritePrivateProfileString(Section, Key, Value, File)
     End Sub
     'ruta donde se guardara la configuracion del archivo ini'
-    Dim ruta As String = "\config.ini"
+    Dim CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
+
+
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
 
-            servidor.Text = ConfigINI.ReadINI(ruta, "Connection", "dbhost")
-            bd.Text = ConfigINI.ReadINI(ruta, "Connection", "dbschema")
-            puerto.Text = ConfigINI.ReadINI(ruta, "Connection", "dbport")
-            usuario.Text = ConfigINI.ReadINI(ruta, "Connection", "dbuser")
-            password.Text = ConfigINI.ReadINI(ruta, "Connection", "dbpassword")
+            servidor.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbhost")
+            bd.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbschema")
+            puerto.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbport")
+            usuario.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbuser")
+            password.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbpassword")
+
+
         Catch exp As Exception
             MsgBox(exp.ToString)
         End Try
@@ -39,13 +54,14 @@ Public Class ConfigINI
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Try
-            ConfigINI.WriteINI(ruta, "Connection", "usedb", "true")
-            ConfigINI.WriteINI(ruta, "Application", "console", "true")
-            ConfigINI.WriteINI(ruta, "Connection", "dbhost", servidor.Text)
-            ConfigINI.WriteINI(ruta, "Connection", "dbschema", bd.Text)
-            ConfigINI.WriteINI(ruta, "Connection", "dbport", puerto.Text)
-            ConfigINI.WriteINI(ruta, "Connection", "dbuser", usuario.Text)
-            ConfigINI.WriteINI(ruta, "Connection", "dbpassword", password.Text)
+            ConfigINI.WriteINI(CONFIG_FILE, "BD", "usedb", "true")
+            ConfigINI.WriteINI(CONFIG_FILE, "Application", "console", "true")
+            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbhost", servidor.Text)
+            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbschema", bd.Text)
+            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbport", puerto.Text)
+            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbuser", usuario.Text)
+            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbpassword", password.Text)
+
 
 
             MsgBox("Datos Guardados correctamente")
@@ -84,5 +100,24 @@ Public Class ConfigINI
         bd.Enabled = False
         usuario.Enabled = False
         password.Enabled = False
+
+
+        ConfigINI.WriteINI(CONFIG_FILE, "BD", "usedb", "true")
+        ConfigINI.WriteINI(CONFIG_FILE, "Application", "console", "true")
+        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbhost", "192.168.1.56")
+        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbschema", "rdslogs")
+        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbport", "339")
+        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbuser", "rdsuser")
+        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbpassword", "{strong_password}")
+
+
+    End Sub
+
+    Private Sub Form1_FormClosed(sender As Object, e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+
+    End Sub
+
+    Private Sub cancel_Click(sender As Object, e As EventArgs) Handles cancel.Click
+
     End Sub
 End Class

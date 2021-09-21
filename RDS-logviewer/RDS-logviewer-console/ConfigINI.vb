@@ -6,63 +6,56 @@ Public Class ConfigINI
 
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
-        Button3.DialogResult = DialogResult.OK
+        btn_GuardarDatos.DialogResult = DialogResult.OK
 
         cancel.DialogResult = DialogResult.Cancel
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
 
     End Sub
 
-    <DllImport("kernel32.dll", SetLastError:=True)>
-    Private Shared Function GetPrivateProfileString(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As StringBuilder, ByVal nSize As Integer, ByVal lpFileName As String) As Integer
-    End Function
-
-    <DllImport("kernel32.dll", SetLastError:=True)>
-    Private Shared Function WritePrivateProfileString(ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpString As String, ByVal lpFileName As String) As Boolean
-    End Function
-
-    Public Shared Function ReadINI(ByVal File As String, ByVal Section As String, ByVal Key As String) As String
-        Dim sb As New StringBuilder(500)
-        GetPrivateProfileString(Section, Key, "", sb, sb.Capacity, File)
-        Return sb.ToString
-    End Function
-
-    Public Shared Sub WriteINI(ByVal File As String, ByVal Section As String, ByVal Key As String, ByVal Value As String)
-        WritePrivateProfileString(Section, Key, Value, File)
-    End Sub
-    'ruta donde se guardara la configuracion del archivo ini'
-    Dim CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
-
-
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Sub load_data()
         Try
+            Dim asd As String = ReadINI(CONFIG_FILE, "BD", "usedb")
 
-            servidor.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbhost")
-            bd.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbschema")
-            puerto.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbport")
-            usuario.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbuser")
-            password.Text = ConfigINI.ReadINI(CONFIG_FILE, "BD", "dbpassword")
+            If asd.Equals("true") Then
+                chk_usedb.Checked = True
+            Else
+                chk_usedb.Checked = False
+            End If
+
+            txt_servidor.Text = ReadINI(CONFIG_FILE, "BD", "dbhost")
+            txt_bd.Text = ReadINI(CONFIG_FILE, "BD", "dbschema")
+            txt_puerto.Text = ReadINI(CONFIG_FILE, "BD", "dbport")
+            txt_usuario.Text = ReadINI(CONFIG_FILE, "BD", "dbuser")
+            txt_password.Text = ReadINI(CONFIG_FILE, "BD", "dbpassword")
 
 
         Catch exp As Exception
             MsgBox(exp.ToString)
         End Try
+    End Sub
 
+    Private Sub btn_verDatos_Click(sender As Object, e As EventArgs) Handles btn_verDatos.Click
+
+        load_data()
     End Sub
 
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    Private Sub btn_GuardarDatos_Click(sender As Object, e As EventArgs) Handles btn_GuardarDatos.Click
         Try
-            ConfigINI.WriteINI(CONFIG_FILE, "BD", "usedb", "true")
-            ConfigINI.WriteINI(CONFIG_FILE, "Application", "console", "true")
-            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbhost", servidor.Text)
-            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbschema", bd.Text)
-            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbport", puerto.Text)
-            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbuser", usuario.Text)
-            ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbpassword", password.Text)
 
+            If chk_usedb.Checked Then
+                WriteINI(CONFIG_FILE, "BD", "usedb", "true")
+            Else
+                WriteINI(CONFIG_FILE, "BD", "usedb", "false")
 
+            End If
+
+            WriteINI(CONFIG_FILE, "BD", "dbhost", txt_servidor.Text)
+            WriteINI(CONFIG_FILE, "BD", "dbschema", txt_bd.Text)
+            WriteINI(CONFIG_FILE, "BD", "dbport", txt_puerto.Text)
+            WriteINI(CONFIG_FILE, "BD", "dbuser", txt_usuario.Text)
+            WriteINI(CONFIG_FILE, "BD", "dbpassword", txt_password.Text)
 
             MsgBox("Datos Guardados correctamente")
         Catch ex As Exception
@@ -70,54 +63,33 @@ Public Class ConfigINI
         End Try
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+    Private Sub chk_usedb_CheckedChanged(sender As Object, e As EventArgs) Handles chk_usedb.CheckedChanged
 
-        If CheckBox1.Checked Then
-            Button3.Enabled = True
-            Button1.Enabled = True
-            puerto.Enabled = True
-            servidor.Enabled = True
-            bd.Enabled = True
-            usuario.Enabled = True
-            password.Enabled = True
+        If chk_usedb.Checked Then
+            habilitar_componentes(True)
         Else
-            Button3.Enabled = False
-            Button1.Enabled = False
-            puerto.Enabled = False
-            servidor.Enabled = False
-            bd.Enabled = False
-            usuario.Enabled = False
-            password.Enabled = False
+            habilitar_componentes(False)
         End If
 
     End Sub
 
     Private Sub ConfigINI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Button3.Enabled = False
-        Button1.Enabled = False
-        puerto.Enabled = False
-        servidor.Enabled = False
-        bd.Enabled = False
-        usuario.Enabled = False
-        password.Enabled = False
+        btn_GuardarDatos.Enabled = True
+        habilitar_componentes(False)
 
-
-        ConfigINI.WriteINI(CONFIG_FILE, "BD", "usedb", "true")
-        ConfigINI.WriteINI(CONFIG_FILE, "Application", "console", "true")
-        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbhost", "192.168.1.56")
-        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbschema", "rdslogs")
-        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbport", "339")
-        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbuser", "rdsuser")
-        ConfigINI.WriteINI(CONFIG_FILE, "BD", "dbpassword", "{strong_password}")
-
+        load_data()
 
     End Sub
-
-    Private Sub Form1_FormClosed(sender As Object, e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-
+    Sub habilitar_componentes(ByVal bool As Boolean)
+        btn_verDatos.Enabled = bool
+        txt_puerto.Enabled = bool
+        txt_servidor.Enabled = bool
+        txt_bd.Enabled = bool
+        txt_usuario.Enabled = bool
+        txt_password.Enabled = bool
     End Sub
 
-    Private Sub cancel_Click(sender As Object, e As EventArgs) Handles cancel.Click
+    Private Sub btn_testDB_Connection_Click(sender As Object, e As EventArgs) Handles btn_testDB_Connection.Click
 
     End Sub
 End Class

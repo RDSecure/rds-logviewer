@@ -2,13 +2,7 @@
 Imports System.IO
 Imports System.Xml
 Imports MySql.Data.MySqlClient
-Imports System.Data.Sql
-Imports rdslib
-Imports System.Net
-Imports System
-Imports System.Deployment
-
-
+Imports System.Windows.Forms
 
 Module Module1
     'Dim xml As String = String.Empty
@@ -47,7 +41,7 @@ Module Module1
 
     End Sub
 
-    Private Function DBConnectionStatus() As Boolean
+    Function DBConnectionStatus() As Boolean
         Try
             Using sqlConn As New MySqlConnection(ConnectionStr)
                 sqlConn.Open()
@@ -62,27 +56,30 @@ Module Module1
         End Try
     End Function
 
+
+
+
     Sub main()
         If getArguments(Environment.GetCommandLineArgs()) Then
+            If GUIMODE Then
+                CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
 
+                If File.Exists(CONFIG_FILE) = False Then
+                    If CreateIniFiles() = False Then
+                        Exit Sub
+                    End If
+                    MsgBox("Se ha creado el archivo de configuracion")
 
-            If getArguments(Environment.GetCommandLineArgs()) Then
-                If GUIMODE Then
-                    CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
-                    If File.Exists(CONFIG_FILE) Then
-                        INI = New ConfigINI()
-                        INI.ShowDialog()
-                        If INI.DialogResult = DialogResult.OK Then
-                            readEventViewer()
-                        Else
-
-                        End If
-                    Else
-                        File.Create(CONFIG_FILE)
-                        MsgBox("Se ha creado el archivo de configuracion")
+                End If
+                If File.Exists(CONFIG_FILE) Then
+                    INI = New ConfigINI()
+                    INI.ShowDialog()
+                    If INI.DialogResult = DialogResult.OK Then
+                        readEventViewer()
                     End If
                 End If
             End If
+
 
 
             If USESQL Then
@@ -323,6 +320,14 @@ Module Module1
             End If
         End If
     End Sub
+
+    Function testConn() As Boolean
+        Try
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
     Sub mio(TimeCreated As String, TimeCreatedf As DateTime, EventID As Integer, LEVEL As Integer, EventRecordID As Integer, Computer As String,
             Origin_code As String, severely_key As String, code As String, SNO As String, INETA As String, message As String, rdsContent As String,
             grouprds As String, userid As String, protocol As String, socket As String)

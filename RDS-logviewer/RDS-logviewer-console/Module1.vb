@@ -18,8 +18,10 @@ Module Module1
     Public dbport As String = "389"             ' el puerto del servicio de la base de datos
     Public dbotherOptions As String = ""        ' Otras opciones para la base de datos
     Public READ_EV As String = ""               ' Archivo XML de los eventos 
-    Public RUN_AS_SERVICE As Boolean = False
+    Public RUN_AS_SERVICE As Boolean = False    ' Ejecutar la aplicación en modo servicio, 
     Public ConnectionStr As String = ""
+    Public ShowAllMessages As Boolean = False
+    Public USECONFIGFILE As Boolean = False
 
     Dim INI As ConfigINI
 
@@ -36,7 +38,6 @@ Module Module1
 
         Catch ex As Exception
             Console.WriteLine(ex.Message)
-
         End Try
 
     End Sub
@@ -56,31 +57,29 @@ Module Module1
         End Try
     End Function
 
-
-
-
     Sub main()
         If getArguments(Environment.GetCommandLineArgs()) Then
-            If GUIMODE Then
-                CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
-
+            ' si la variable RUN_AS_SERVICE es TRUE, entonces no se deberá correr ni CONSOLE ni GUI
+            If RUN_AS_SERVICE Then
+                GUIMODE = False
+                CONSOLEMODE = False
+            End If
+            ' Si usamos el modo config, verificamos que exista
+            If USECONFIGFILE Then
                 If File.Exists(CONFIG_FILE) = False Then
                     If CreateIniFiles() = False Then
                         Exit Sub
                     End If
-                    MsgBox("Se ha creado el archivo de configuracion")
-
-                End If
-                If File.Exists(CONFIG_FILE) Then
-                    INI = New ConfigINI()
-                    INI.ShowDialog()
-                    If INI.DialogResult = DialogResult.OK Then
-                        readEventViewer()
-                    End If
+                    'Mostramos dónde se creó el archivo de configuración
+                    Console.Write("Se ha creado el archivo de configuracion " & CONFIG_FILE)
+                Else
+                    Console.Write("Usando el archivo de configuracion " & CONFIG_FILE)
                 End If
             End If
-
-
+            If GUIMODE Then
+                INI = New ConfigINI()
+                INI.ShowDialog()
+            End If
 
             If USESQL Then
                 ConnectionStr = "Server=" & dbhost & "; Port= " & dbport & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
@@ -98,8 +97,11 @@ Module Module1
             Else
                 readEventViewer()
             End If
-
         End If
+    End Sub
+
+    Sub launch()
+
     End Sub
 
 
@@ -139,14 +141,14 @@ Module Module1
 
     End Sub
 
-    Sub _myHandler(ByVal sender As Object, ByVal args As ConsoleCancelEventArgs)
-        Console.WriteLine(vbLf & "The read operation has been interrupted.")
-        Console.WriteLine($"  Key pressed: {args.SpecialKey}")
-        Console.WriteLine($"  Cancel property: {args.Cancel}")
-        End
-        Console.WriteLine($"  Cancel property: {args.Cancel}")
-        Console.WriteLine("The read operation will resume..." & vbLf)
-    End Sub
+    'Sub _myHandler(ByVal sender As Object, ByVal args As ConsoleCancelEventArgs)
+    '    Console.WriteLine(vbLf & "The read operation has been interrupted.")
+    '    Console.WriteLine($"  Key pressed: {args.SpecialKey}")
+    '    Console.WriteLine($"  Cancel property: {args.Cancel}")
+    '    End
+    '    Console.WriteLine($"  Cancel property: {args.Cancel}")
+    '    Console.WriteLine("The read operation will resume..." & vbLf)
+    'End Sub
 
     Public Sub watcher_EventRecordWritten(sender As Object, e As EventRecordWrittenEventArgs)
         GenerateEvents(e.EventRecord.ToXml())
@@ -173,7 +175,8 @@ Module Module1
         ' el el mensaje DATA contiene la cadena "connection ended - client ended with error" ignoramoes el mensaje.HWSPS06
         ' este mensaje no es relevante para el análisis y causa mucho ruido. Y no tiene caso gastar recursos de 
         ' memoria y CPU para analizar el XML
-        If Data.Contains("HWSPR006I") Or
+        If ShowAllMessages = False Then
+            If Data.Contains("HWSPR006I") Or
            Data.Contains("HWSPR005I") Or
            Data.Contains("HWSPR010I") Or
            Data.Contains("HWSPR001I") Or
@@ -184,15 +187,15 @@ Module Module1
            Data.Contains("HWSPS004I") Or
            Data.Contains("HWSPATE038W") Or
            Data.Contains("HIWSE048E") Then
-            'colorize("HWSPATE038W - DROPED", ConsoleColor.Red)
-            Exit Sub
+                'colorize("HWSPATE038W - DROPED", ConsoleColor.Red)
+                Exit Sub
+            End If
         End If
+
 
         EventID = Integer.Parse(rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "EventID"))
         Level = Integer.Parse(rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "Level"))
         EventRecordID = Integer.Parse(rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "EventRecordID"))
-        'Dim TimeCreatedf As Date
-
         Keywords = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "Keywords")
         Computer = rdslib.xmlhelper.getXML_Element_fromXML(xmlcontent, "/Event/System", "Computer")
         Provider = rdslib.xmlhelper.GetContinents(xmlcontent, "//System//Provider", "Name")
@@ -267,7 +270,6 @@ Module Module1
                     mio(SystemTime, TimeCreatedf, EventID, Level, EventRecordID, Computer, OriginCode, severely_key, code, SNO, INETA, message, Data, group, userid, protocol, socket)
                 End If
             Else
-                'HWSPR002I Report Performance / elapsed CPU time 34 sec / virt-stor 61GB / I-O 153 1649KB.
                 Dim posicion As Integer = Data.IndexOf(" ")
                 code = Data.Substring(0, posicion)
                 severely_key = Right(code, 1).ToUpper
@@ -310,24 +312,17 @@ Module Module1
                 colorize("Data   :  " & Data, ConsoleColor.Green)
             ElseIf Data.Contains("ldap authentication failed") Then
                 ' si la cadena contiene ldap authentication failed on lo coloreamos de rojo
-                colorize("Data   : " & Data, ConsoleColor.DarkMagenta)
+                colorize("Data   : " & Data, ConsoleColor.DarkRed)
             ElseIf Data.ToLower.Contains("ERROR") Then
-                colorize("Error  : " & Data, ConsoleColor.DarkCyan)
+                colorize("Error  : " & Data, ConsoleColor.Red)
             ElseIf Data.Contains("Error") Or Data.Contains("error") Then
-                colorize("Error  : " & Data, ConsoleColor.DarkRed)
+                colorize("Error  : " & Data, ConsoleColor.Red)
             Else
                 colorize("Data   : " & Data, ConsoleColor.Gray)
             End If
         End If
     End Sub
 
-    Function testConn() As Boolean
-        Try
-            Return True
-        Catch ex As Exception
-            Return False
-        End Try
-    End Function
     Sub mio(TimeCreated As String, TimeCreatedf As DateTime, EventID As Integer, LEVEL As Integer, EventRecordID As Integer, Computer As String,
             Origin_code As String, severely_key As String, code As String, SNO As String, INETA As String, message As String, rdsContent As String,
             grouprds As String, userid As String, protocol As String, socket As String)
@@ -414,7 +409,6 @@ Module Module1
         Console.Write(mensaje)
         Console.ResetColor()
     End Sub
-
 #Region "Testing"
 
 

@@ -7,6 +7,7 @@
                     Try
                         CONFIG_FILE = argumentos(i + 1)
                         If (CONFIG_FILE.StartsWith("--")) Then
+                            USECONFIGFILE = True
                             CONFIG_FILE = Environment.CurrentDirectory & "\config.ini"
                         End If
                     Catch ex As Exception
@@ -17,6 +18,8 @@
                     Return False
                 ElseIf argumentos(i).Equals("--console") Then
                     CONSOLEMODE = True
+                ElseIf argumentos(i).Equals("--show_all_meesages") Then
+                    ShowAllMessages = True
                 ElseIf argumentos(i).Equals("--service") Then
                     RUN_AS_SERVICE = True
                 ElseIf argumentos(i).Equals("--gui") Then

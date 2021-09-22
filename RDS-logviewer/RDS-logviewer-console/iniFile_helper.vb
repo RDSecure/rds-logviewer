@@ -24,7 +24,6 @@ Module iniFile_helper
     Function CreateTemplate() As Boolean
         Try
             WriteINI(CONFIG_FILE, "BD", "usedb", "true")
-            ' WriteINI(CONFIG_FILE, "Application", "console", "true")
             WriteINI(CONFIG_FILE, "BD", "dbhost", "{IP/name}")
             WriteINI(CONFIG_FILE, "BD", "dbschema", "{database name}")
             WriteINI(CONFIG_FILE, "BD", "dbport", "339")
@@ -50,7 +49,5 @@ Module iniFile_helper
             Console.WriteLine(ex.Message)
             Return False
         End Try
-
-
     End Function
 End Module

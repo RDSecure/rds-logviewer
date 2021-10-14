@@ -1,6 +1,13 @@
 # rds-logviewer
 Lector de LOGS de RDS, tiene la capacidad de exportar la información captada a una base de datos MySQL
 
+## Requisitos del sisitmema
+- Sistema Operativo:
+- Versión del .net:
+- Base de datos (versión): MySQl -verson. MariaDB -version
+
+
+
 ## Introducción
 El programa **RDS-LogViewer-Console** tiene como finalidad leer los logs que va generando el RDSGateway/WSP en el WEV
 

@@ -91,5 +91,18 @@ Public Class ConfigINI
 
     Private Sub btn_testDB_Connection_Click(sender As Object, e As EventArgs) Handles btn_testDB_Connection.Click
 
+        Dim sqlConn As New MySqlConnection()
+
+        If sqlConn.State = ConnectionState.Open Then
+
+            MsgBox("conexion abierta")
+        Else
+
+            MsgBox("conexion cerrada")
+        End If
+
+
+
+
     End Sub
 End Class

@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Text
+Imports MySql.Data.MySqlClient
 
 Public Class ConfigINI
     Sub New()

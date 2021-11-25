@@ -91,15 +91,14 @@ Public Class ConfigINI
     End Sub
 
     Private Sub btn_testDB_Connection_Click(sender As Object, e As EventArgs) Handles btn_testDB_Connection.Click
+        Dim test As Boolean
 
         Dim sqlConn As New MySqlConnection()
 
-        If sqlConn.State = ConnectionState.Open Then
-
-            MsgBox("conexion abierta")
+        If DBConnectionStatus() Then
+            MsgBox("Super")
         Else
-
-            MsgBox("conexion cerrada")
+            MsgBox(":(")
         End If
 
 

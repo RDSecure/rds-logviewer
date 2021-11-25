@@ -292,7 +292,6 @@ Partial Class ConfigINI
         Me.btn_testDB_Connection.TabIndex = 61
         Me.btn_testDB_Connection.Text = "Probar conexió a la DB"
         Me.btn_testDB_Connection.UseVisualStyleBackColor = False
-        Me.btn_testDB_Connection.Visible = False
         '
         'ConfigINI
         '

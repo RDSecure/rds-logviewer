@@ -23,6 +23,7 @@ Module Module1
     Public ShowAllMessages As Boolean = False
     Public USECONFIGFILE As Boolean = False
 
+
     Dim INI As ConfigINI
 
 
@@ -43,8 +44,10 @@ Module Module1
     End Sub
 
     Function DBConnectionStatus() As Boolean
+        Dim prueba As String
         Try
-            Using sqlConn As New MySqlConnection(ConnectionStr)
+            prueba = "Server=" & dbhost & "; Port= " & dbport & "; User Id=" & dbusername & "; Password=" & dbpassword & "; Database=" & dbschema
+            Using sqlConn As New MySqlConnection(prueba)
                 sqlConn.Open()
                 Return (sqlConn.State = ConnectionState.Open)
             End Using

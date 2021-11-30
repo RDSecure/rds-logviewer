@@ -2,9 +2,9 @@
 Lector de LOGS de RDS, tiene la capacidad de exportar la información captada a una base de datos MySQL
 
 ## Requisitos del sisitmema
-- Sistema Operativo:
-- Versión del .net:
-- Base de datos (versión): MySQl -verson. MariaDB -version
+-Sistema Operativo: widnows 10.
+-Version del .net: Visual studio 2015 V.4.8.0
+-Base de datos (versión): MySQl -11.3.0 (32 Bit o 64 bit)
 
 
 

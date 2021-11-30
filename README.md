@@ -7,6 +7,10 @@ Lector de LOGS de RDS, tiene la capacidad de exportar la información captada a 
 - Base de datos (versión): MySQl -11.3.0 (32 Bit o 64 bit)
 
 
+## Edición del archivo de configuración
+
+![image](https://user-images.githubusercontent.com/30660343/config.png.png)
+
 
 ## Introducción
 El programa **RDS-LogViewer-Console** tiene como finalidad leer los logs que va generando el RDSGateway/WSP en el WEV

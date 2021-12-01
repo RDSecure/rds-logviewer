@@ -13,7 +13,9 @@ Nos dirigimos a la pagina https://www.haddishysql.com/download.php para descarga
 
 Después de haber descargado HeidiSQL procedemos a instalarlo dado clic en la descarga, el siguiente paso nos aparecerá una ventana donde vienen los acuerdos de la licencia si uno está de acuerdo sobre él se le da clic en aceptar en aceptó el acuerdo y después se le da de nuevo en el boton de siguiente.
 
-![heidi2](https://user-images.githubusercontent.com/87664093/144310979-a2f016bf-d38f-4b4f-90b1-ff3958ee3653.png)
+![heidi2](https://user-images.githubusercontent.com/87664093/144312172-3b78db46-912e-4da2-b82b-460829c16e57.png)
+
+
 
 las opciónes que nos muestra en la siguiente ventana  son iconos adicionales:
 •	Crear un icono en el escritorio
@@ -22,15 +24,18 @@ las opciónes que nos muestra en la siguiente ventana  son iconos adicionales:
 •	Automáticamente informe versiones clientes de servidor en HeidiSQL.com 
 
 
-![heidi3](https://user-images.githubusercontent.com/87664093/144311016-1e7a0434-c772-4cc9-b87d-45a85316bc07.png)
+![heidi3](https://user-images.githubusercontent.com/87664093/144312202-e98f3f81-8331-425d-979f-8a0fcd8871a6.png)
+
 
 La siguiente ventana nos mostrara las tareas adiccionales que elegimos para corovorar si estan correctas y poder iniciar la instalacion. 
 
-![heidi4](https://user-images.githubusercontent.com/87664093/144311068-4d856501-3243-4f91-a3e9-d9f2ebc24a42.png)
+![heidi4](https://user-images.githubusercontent.com/87664093/144312229-6937bcfe-ac7c-492a-bc3e-d46f0a13ac69.png)
+
 
 El siguiente paso se escoge el nombre de la carpeta donde nos indica donde va a quedar el programa para cuando se realice una base y uno lo quiera modificar o hacer algo a ese archivo se pueda localizar. El mismo programa por default nos proporsiona un nombre pero uno puede escoger el que uno quiera, se da click en siguiente para continuar con la instalacion. 
 
-![heidi5](https://user-images.githubusercontent.com/87664093/144311113-69da7c90-b48a-493a-bd46-ba9e6c0599be.png)
+![heidi5](https://user-images.githubusercontent.com/87664093/144312268-d41e854c-1651-4d44-a0c0-f010b5753307.png)
+
 
 al dar click al boton de siguiente nos montrara una barra de instalacion y un boton para cancelar la instalacion.
 

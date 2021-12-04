@@ -46,7 +46,8 @@ Al final de la instalación nos indica Heidi SQL que la instalación fue correct
 
 - Creacion de un formulario en la aplicacion para que el usuario pueda configurar una nueva conexion hacia la base de datos que desee conectrase, puede guardar esos datos ya que se almacenaran en un archivo INI y de igual manera podra observar los datos que contiene el archivo INI.
 
-![image](https://user-images.githubusercontent.com/30660343/config.png.png)
+![config](https://user-images.githubusercontent.com/87662377/144690206-f5162146-81a8-467a-a47b-43c31d2958af.png)
+
 
 
 ## Introducción

@@ -1,10 +1,99 @@
 # rds-logviewer
-Lector de LOGS de RDS, tiene la capacidad de exportar la información captada a una base de datos MySQL
+Lector de LOGS de RDS, tiene la capacidad de exportar la información captada a una base de datos MySQL 
+
+# Objetivo general    
+
+Diseñar y Desarrollar una aplicación Web que Implemente el sistema RDsecure Logs System que permita obtener y extraer los datos e información de los usuarios y llevar un control, gestión y administración dentro de la base de datos, mediante consultas y requerimientos dentro de la empresa J-PYRSA.  
+
 
 ## Requisitos del sisitmema
 - Sistema Operativo: widnows 10, 7.
 - Version del .net: Visual studio 2015 V.4.8.0
 - Base de datos (versión): MySQl -11.3.0 (32 Bit o 64 bit)
+
+## Herramientas de desarrollo
+
+Visual Studio
+
+Microsoft Visual Studio es un entorno de desarrollo integrado (IDE, por sus siglas en inglés) para Windows y macOS. Es compatible con múltiples lenguajes de programación, tales como C++, C#, Visual Basic .NET, F#, Java, Python, Ruby y PHP, al igual que entornos de desarrollo web, como ASP.NET MVC, Django, etc., a lo cual hay que sumarle las nuevas capacidades en línea bajo Windows Azure en forma del editor Monaco.
+Visual Studio permite a los desarrolladores crear sitios y aplicaciones web, así como servicios web en cualquier entorno compatible con la plataforma .NET (a partir de la versión .NET 2002). Así, se pueden crear aplicaciones que se comuniquen entre estaciones de trabajo, páginas web, dispositivos móviles, dispositivos embebidos y videoconsolas, entre otros.
+El Explorador de objetos de SQL Server ofrece una vista de los objetos de base de datos similar a la de SQL Server Management Studio. Con el Explorador de objetos de SQL Server puede realizar trabajos de administración y diseño de bases de datos ligeras. Algunos ejemplos son la edición de datos de tabla, la comparación de esquemas y la ejecución de consultas mediante menús contextuales.
+
+Ventajas 
+•	Permite trabajar con los frameworks:
+o	.NET Framework 2.0
+o	.NET Framework 3.0
+o	.NET Framework 3.5
+o	.NET Framework 4.0
+o	.NET Framework 4.5
+o	.NET Framework 4.5.1
+o	.NET Framework 4.5.2
+o	.NET Framework 4.6
+o	.NET Framework 4.6.1
+o	.NET Core 1.0
+o	.NET Core 1.1
+o	.NET Core 2.0
+
+
+•	Unificación de lenguajes de desarrollo. 
+•	Posibilidad de desarrollar para plataformas móviles con C# nativo.
+•	Excelentes herramientas de depuración. 
+•	Integración de código abierto.
+
+Github
+
+Github es un servicio de alojamiento de repositorios de software que usa Git y que ha sido pensado para compartir código de una manera fácil y ágil. Permite alojar proyectos open source de forma gratuita, lo que ha generado que el número de usuarios que lo utilizan para desarrollar programas, aplicaciones, páginas webs o servicios de Internet no haya dejado de crecer en los últimos años, convirtiéndolo en la plataforma de desarrolladores más grande del mundo.
+
+Ventajas 
+•	Seguimiento de errores.
+•	Búsqueda rápida.
+•	Cuenta con una potente comunidad de desarrolladores en todo el mundo.
+•	Permite descargar como archivo el código fuente.
+•	Posibilita la importación en Git, SVN o TFS.
+•	Puedes personalizar cualquier servicio host en la nube.
+
+GitLab: su estructura y funcionamiento es muy similar a GitHub, pero es más seguro y privado, aunque un poco más complejo de manejar. Una de sus diferencias con GitHub es que se puede instalar en el servidor propio y usar con dominios propios. Cuenta con versiones para empresas –GitLab SAAS- y para usuarios –GitLab Community Edition- y es de código abierto.
+SourceForge: se trata de una web de proyectos colaborativos y desarrollo de software. Dispone de herramientas de rastreo de bugs y soporte técnico y soporta varios sistemas de control de versiones como Subversion, Git, o Mercurial. Está orientado a equipos de desarrollo profesional y cuenta con repositorios privados gratuitos, integración con Jira, revisión de código avanzado y CI/CD integrado. Aunque no es de código abierto, sí permite proyectos open source.
+
+Launchpad: elaborado por Canonical, la empresa creadora de Ubuntu, es otra de las plataformas colaborativas de mayor popularidad. Es completamente gratuita y dispone de multitud de herramientas –rastreador de bugs, análisis de código, hosting de código a través de Bazaar,  proyectos de traducción, etc.-
+
+Bitbucket: es un repositorio de código que ofrece un importador GitHub y que permite alojar repositorios tanto públicos como privados de forma gratuita, aunque solo pueden trabajar cinco personas como máximo en cada proyecto. Disponible en español, funciona desde el navegador y trabaja con controladores de versiones como Git y Mercurial. Entre sus características están la posibilidad de realizar un seguimiento de tareas y problemas, búsqueda y comparación de código o permiso de acceso a las diferentes ramas del proyecto. No es de código abierto.
+
+
+HeidiSQL
+
+HeidiSQL es un ligero programa para Windows que nos ofrece una interfaz amigable para administrar MySQL, pero también sistemas gestores SQL Server de Microsoft. Permite navegar por las bases de datos y las tablas, editando cualquier información, creando registros, modificando tablas, vistas, procedimientos, triggers y en general todo aquello que necesitaremos en el día a día de la administración de bases de datos.
+
+Ventajas 
+
+•	Conectar con varios servidores a la vez en una única ventana.
+•	Conectar con servidores MySQL por línea de comandos.
+•	Conectar con SSH o realizar conexiones SSL.
+•	Editar tablas, vistas, procedimientos almacenados, triggers, eventos agendados...
+•	Crear reportes SQL.
+•	Exportar o importar datos desde o hacia otras fuentes o bases de datos. Por ejemplo, importar datos que haya en ficheros de texto o exportar los datos de las tablas a ficheros de texto con diversos formatos como CSV, HTML, XML, SQL, arrays de PHP, etc.
+•	Administrar los privilegios de los usuarios.
+•	Escribir consultas con resaltado de código SQL y completado de código y preformato de código SQL para una mejor lectura.
+•	Monitorizar procesos del cliente y matarlos si lo necesitamos.
+•	Búsquedas de un texto, no solo en una tabla, sino en múltiples, por si no sabemos dónde se encontraba.
+•	Optimización y reparación de tablas, etc.
+
+SQL Server
+
+Microsoft SQL Server es la alternativa de Microsoft a otros potentes sistemas gestores de bases de datos. Es un sistema de gestión de base de datos relacional desarrollado como un servidor que da servicio a otras aplicaciones de software que pueden funcionar ya sea en el mismo ordenador o en otro ordenador a través de una red (incluyendo Internet).
+Los servidores SQL Server suelen presentar como principal característica una alta disponibilidad al permitir un gran tiempo de actividad y una conmutación más rápida. Todo esto sin sacrificar los recursos de memoria del sistema. Gracias a las funciones de memoria integradas directamente en los motores de base de datos SQL Server y de análisis, mejora la flexibilidad y se facilita el uso. Pero quizá su característica más destacada es que ofrece una solución robusta que se integra a la perfección con la familia de servidores Microsoft Server. 
+
+Ventajas 
+
+•	Soporte de transacciones.
+•	Escalabilidad, estabilidad y seguridad.
+•	Soporte de procedimientos almacenados.
+•	Incluye también un potente entorno gráfico de administración, que permite el
+•	uso de comandos DDL y DML gráficamente.
+•	Permite trabajar en modo cliente-servidor, donde la información y datos se alojan en el servidor y las terminales o clientes de la red solo acceden a la información.
+•	Permite administrar información de otros servidores de datos.
+
+
 ## Instalación del esquema de la base de datos
 Instalacion de heidiSQL
 Nos dirigimos a la pagina https://www.haddishysql.com/download.php para descargar el programa HeidiSQL.
@@ -54,6 +143,9 @@ Al final de la instalación nos indica Heidi SQL que la instalación fue correct
 El programa **RDS-LogViewer-Console** tiene como finalidad leer los logs que va generando el RDSGateway/WSP en el WEV
 
 El RDSG, al momento de la instalación crea una entrada especial en el Windows EventViewer llamada "HOB WebSecureProxy", en ese repositorio se van a almacenar todos los logs que se van generando.
+
+
+
 ## Terminología
 | Término | Descripción |
 |--|--|
@@ -121,6 +213,22 @@ Debido a que esta aplicación será parte de la Suit del RDS, se requerirá esta
 ## Base de datos
 ### Estructura de base la base de datos.
 A continuación se muestran los 
+- Diseñar una solución de software que resuelva las necesidades del administrador haciendo una interacción en tiempo real propias del proceso de protocolo, utilizando tecnologías estándares y protocolos de seguridad que garanticen la autenticidad, fiabilidad, integridad, confidencialidad y disponibilidad de la información de los usuarios. 
+ El registro deberá contener, como mínimo, los siguientes datos: 
+•	Usuario o Administrador. 
+•	Registro de inicio de sección. 
+•	Eventos realizados. 
+•	Niveles. 
+•	Dirección IP. 
+•	Servidor conectado. 
+•	Mensajes. 
+•	Contenido. 
+•	Grupos. 
+•	Pro tocólogos. 
+•	Socket. 
+•	Severely. 
+•	Fecha de finalización de sección. 
+
 
 ![image](https://user-images.githubusercontent.com/30660343/107375508-19efc400-6ae9-11eb-8726-0a2922fb1c04.png)
 

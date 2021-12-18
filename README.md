@@ -214,19 +214,20 @@ Debido a que esta aplicación será parte de la Suit del RDS, se requerirá esta
 A continuación se muestran los 
 - Diseñar una solución de software que resuelva las necesidades del administrador haciendo una interacción en tiempo real propias del proceso de protocolo, utilizando tecnologías estándares y protocolos de seguridad que garanticen la autenticidad, fiabilidad, integridad, confidencialidad y disponibilidad de la información de los usuarios. 
  El registro deberá contener, como mínimo, los siguientes datos: 
-•	Usuario o Administrador. 
-•	Registro de inicio de sección. 
-•	Eventos realizados. 
-•	Niveles. 
-•	Dirección IP. 
-•	Servidor conectado. 
-•	Mensajes. 
-•	Contenido. 
-•	Grupos. 
-•	Pro tocólogos. 
-•	Socket. 
-•	Severely. 
-•	Fecha de finalización de sección. 
+-	Usuario o Administrador. 
+-	Registro de inicio de sección. 
+-	Eventos realizados. 
+-	Niveles. 
+-	Dirección IP. 
+-	Servidor conectado. 
+-	Mensajes. 
+-	Contenido. 
+-	Grupos. 
+-	Pro tocólogos. 
+-	Socket. 
+-	Severely. 
+-	Fecha de finalización de sección. 
+
 
 
 ![image](https://user-images.githubusercontent.com/30660343/107375508-19efc400-6ae9-11eb-8726-0a2922fb1c04.png)

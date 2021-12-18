@@ -40,6 +40,7 @@ El Explorador de objetos de SQL Server ofrece una vista de los objetos de base d
 -	Excelentes herramientas de depuración. 
 -	Integración de código abierto.
 
+![Visual_Studio_Icon_2019 svg](https://user-images.githubusercontent.com/87664093/146627661-d38c8f42-6994-4ebc-9a7d-2bab18ff5aac.png)
 
 
 
@@ -59,6 +60,7 @@ HeidiSQL es un ligero programa para Windows que nos ofrece una interfaz amigable
 -	Monitorizar procesos del cliente y matarlos si lo necesitamos.
 -	Búsquedas de un texto, no solo en una tabla, sino en múltiples, por si no sabemos dónde se encontraba.
 -	Optimización y reparación de tablas, etc.
+![HeidiSQL_logo_image](https://user-images.githubusercontent.com/87664093/146627669-1f4e3a40-29f5-4dd3-b577-0dcf097674f7.png)
 
 
 
@@ -82,6 +84,7 @@ Los servidores SQL Server suelen presentar como principal característica una al
 -	Permite administrar información de otros servidores de datos.
 
 
+![microsoft_sqlserver](https://user-images.githubusercontent.com/87664093/146627673-b6d4e9b6-77b9-4897-9082-146da56cd756.png)
 
 
 

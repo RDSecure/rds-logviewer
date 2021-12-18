@@ -13,7 +13,8 @@ Diseñar y Desarrollar una aplicación Web que Implemente el sistema RDsecure Lo
 
 ## Herramientas de desarrollo
 - Visual Studio 
-Microsoft Visual Studio es un entorno de desarrollo integrado (IDE, por sus siglas en inglés) para Windows y macOS. Es compatible con múltiples lenguajes de programación, tales como C++, C#, Visual Basic .NET, F#, Java, Python, Ruby y PHP, al igual que entornos de desarrollo web, como ASP.NET MVC, Django, etc., a lo cual hay que sumarle las nuevas capacidades en línea bajo Windows Azure en forma del editor Monaco.
+es un entorno de desarrollo integrado (IDE, por sus siglas en inglés) para Windows y macOS. Es compatible con múltiples lenguajes de programación, tales como C++, C#, Visual Basic .NET, F#, Java, Python, Ruby y PHP, al igual que entornos de desarrollo web, como ASP.NET MVC, Django, etc., a lo cual hay que sumarle las nuevas capacidades en línea bajo Windows Azure en forma del editor Monaco.
+
 
 Visual Studio permite a los desarrolladores crear sitios y aplicaciones web, así como servicios web en cualquier entorno compatible con la plataforma .NET (a partir de la versión .NET 2002). Así, se pueden crear aplicaciones que se comuniquen entre estaciones de trabajo, páginas web, dispositivos móviles, dispositivos embebidos y videoconsolas, entre otros.
 
@@ -21,23 +22,24 @@ El Explorador de objetos de SQL Server ofrece una vista de los objetos de base d
 
 
 -Ventajas 
-•	Permite trabajar con los frameworks:
-o	.NET Framework 2.0
-o	.NET Framework 3.0
-o	.NET Framework 3.5
-o	.NET Framework 4.0
-o	.NET Framework 4.5
-o	.NET Framework 4.5.1
-o	.NET Framework 4.5.2
-o	.NET Framework 4.6
-o	.NET Framework 4.6.1
-o	.NET Core 1.0
-o	.NET Core 1.1
-o	.NET Core 2.0
-•	Unificación de lenguajes de desarrollo. 
-•	Posibilidad de desarrollar para plataformas móviles con C# nativo.
-•	Excelentes herramientas de depuración. 
-•	Integración de código abierto.
+-	Permite trabajar con los frameworks:
+-	.NET Framework 2.0
+-	.NET Framework 3.0
+-	.NET Framework 3.5
+-	.NET Framework 4.0
+-	.NET Framework 4.5
+-	.NET Framework 4.5.1
+-	.NET Framework 4.5.2
+-	.NET Framework 4.6
+-	.NET Framework 4.6.1
+-	.NET Core 1.0
+-	.NET Core 1.1
+-	.NET Core 2.0
+-	Unificación de lenguajes de desarrollo. 
+-	Posibilidad de desarrollar para plataformas móviles con C# nativo.
+-	Excelentes herramientas de depuración. 
+-	Integración de código abierto.
+
 
 
 
@@ -46,17 +48,18 @@ o	.NET Core 2.0
 HeidiSQL es un ligero programa para Windows que nos ofrece una interfaz amigable para administrar MySQL, pero también sistemas gestores SQL Server de Microsoft. Permite navegar por las bases de datos y las tablas, editando cualquier información, creando registros, modificando tablas, vistas, procedimientos, triggers y en general todo aquello que necesitaremos en el día a día de la administración de bases de datos.
 
 - Ventajas
-•	Conectar con varios servidores a la vez en una única ventana.
-•	Conectar con servidores MySQL por línea de comandos.
-•	Conectar con SSH o realizar conexiones SSL.
-•	Editar tablas, vistas, procedimientos almacenados, triggers, eventos agendados...
-•	Crear reportes SQL.
-•	Exportar o importar datos desde o hacia otras fuentes o bases de datos. Por ejemplo, importar datos que haya en ficheros de texto o exportar los datos de las tablas a ficheros de texto con diversos formatos como CSV, HTML, XML, SQL, arrays de PHP, etc.
-•	Administrar los privilegios de los usuarios.
-•	Escribir consultas con resaltado de código SQL y completado de código y preformato de código SQL para una mejor lectura.
-•	Monitorizar procesos del cliente y matarlos si lo necesitamos.
-•	Búsquedas de un texto, no solo en una tabla, sino en múltiples, por si no sabemos dónde se encontraba.
-•	Optimización y reparación de tablas, etc.
+-	Conectar con varios servidores a la vez en una única ventana.
+-	Conectar con servidores MySQL por línea de comandos.
+-	Conectar con SSH o realizar conexiones SSL.
+-	Editar tablas, vistas, procedimientos almacenados, triggers, eventos agendados...
+-	Crear reportes SQL.
+-	Exportar o importar datos desde o hacia otras fuentes o bases de datos. Por ejemplo, importar datos que haya en ficheros de texto o exportar los datos de las tablas a ficheros de texto con diversos formatos como CSV, HTML, XML, SQL, arrays de PHP, etc.
+-	Administrar los privilegios de los usuarios.
+-	Escribir consultas con resaltado de código SQL y completado de código y preformato de código SQL para una mejor lectura.
+-	Monitorizar procesos del cliente y matarlos si lo necesitamos.
+-	Búsquedas de un texto, no solo en una tabla, sino en múltiples, por si no sabemos dónde se encontraba.
+-	Optimización y reparación de tablas, etc.
+
 
 
 -  SQL Server
@@ -69,15 +72,14 @@ Los servidores SQL Server suelen presentar como principal característica una al
 
 - Ventajas 
 
-•	Soporte de transacciones.
-•	Escalabilidad, estabilidad y seguridad.
-•	Soporte de procedimientos almacenados.
-•	Incluye también un potente entorno gráfico de administración, que permite el
-•	uso de comandos DDL y DML gráficamente.
-•	Permite trabajar en modo cliente-servidor, donde la información y datos se alojan en el servidor y las terminales o clientes de la red solo acceden a la información.
-•	Permite administrar información de otros servidores de datos.
 
-
+-	Soporte de transacciones.
+-	Escalabilidad, estabilidad y seguridad.
+-	Soporte de procedimientos almacenados.
+-	Incluye también un potente entorno gráfico de administración, que permite el
+-	uso de comandos DDL y DML gráficamente.
+-	Permite trabajar en modo cliente-servidor, donde la información y datos se alojan en el servidor y las terminales o clientes de la red solo acceden a la información.
+-	Permite administrar información de otros servidores de datos.
 
 
 

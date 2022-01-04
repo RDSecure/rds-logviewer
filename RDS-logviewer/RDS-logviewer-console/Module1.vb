@@ -7,7 +7,7 @@ Imports System.Windows.Forms
 Module Module1
     'Dim xml As String = String.Empty
     Public CONSOLEMODE As Boolean = False       ' Manda los mensajes a la salida de la consola
-    Public GUIMODE As Boolean = True            ' Habilita el modo gráfico de la aplicación: TODO
+    Public GUIMODE As Boolean = False            ' Habilita el modo gráfico de la aplicación: TODO
     Public DEBUGMODE As Boolean = False         ' Habilita el modo de debug dónde manda los mensajes
     Public CONFIG_FILE As String = ""           ' El archivo de configucación de la aplicación 
     Public USESQL As Boolean = False            ' Guarda la salida de los datos en una base de datos

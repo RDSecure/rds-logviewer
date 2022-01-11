@@ -6,7 +6,7 @@ Lector de LOGS de RDS, tiene la capacidad de exportar la información captada a 
 Diseñar y Desarrollar una aplicación Web que Implemente el sistema RDsecure Logs System que permita obtener y extraer los datos e información de los usuarios y llevar un control, gestión y administración dentro de la base de datos, mediante consultas y requerimientos dentro de la empresa J-PYRSA.  
 
 
-## Requisitos del sisitmema
+## Requisitos del sistema
 - Sistema Operativo: widnows 10, 7.
 - Version del .net: Visual studio 2015 V.4.8.0
 - Base de datos (versión): MySQl -11.3.0 (32 Bit o 64 bit)

@@ -7,8 +7,8 @@ Diseñar y Desarrollar una aplicación Web que Implemente el sistema RDsecure Lo
 
 
 ## Requisitos del sistema
-- Sistema Operativo: widnows 10, 7.
-- Version del .net: Visual studio 2015 V.4.8.0
+- Sistema Operativo: Windows  10, 7.
+- Versión del .net: Visual Studio 2015 V.4.8.0
 - Base de datos (versión): MySQl -11.3.0 (32 Bit o 64 bit)
 
 ## Herramientas de desarrollo

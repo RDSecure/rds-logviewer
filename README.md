@@ -114,25 +114,23 @@ las opciónes que nos muestra en la siguiente ventana  son iconos adicionales:
 
 ![heidi3](https://user-images.githubusercontent.com/87664093/144312202-e98f3f81-8331-425d-979f-8a0fcd8871a6.png)
 
-
-La siguiente ventana nos mostrara las tareas adiccionales que elegimos para corovorar si estan correctas y poder iniciar la instalacion. 
+La siguiente ventana nos mostrara las tareas adicionales que elegimos para corroborar si están correctas y poder iniciar la instalación. 
 
 ![heidi4](https://user-images.githubusercontent.com/87664093/144312229-6937bcfe-ac7c-492a-bc3e-d46f0a13ac69.png)
 
 
-El siguiente paso se escoge el nombre de la carpeta donde nos indica donde va a quedar el programa para cuando se realice una base y uno lo quiera modificar o hacer algo a ese archivo se pueda localizar. El mismo programa por default nos proporsiona un nombre pero uno puede escoger el que uno quiera, se da click en siguiente para continuar con la instalacion. 
+El siguiente paso se escoge el nombre de la carpeta donde nos indica donde va a quedar el programa para cuando se realice una base y uno lo quiera modificar o hacer algo a ese archivo se pueda localizar. El mismo programa por default nos proporciona un nombre pero uno puede escoger el que uno quiera, se da clic en siguiente para continuar con la instalación.
 
 ![heidi5](https://user-images.githubusercontent.com/87664093/144312268-d41e854c-1651-4d44-a0c0-f010b5753307.png)
 
 
-al dar click al boton de siguiente nos montrara una barra de instalacion y un boton para cancelar la instalacion.
-
-Al final de la instalación nos indica Heidi SQL que la instalación fue correcta y se le da clic en finalizar y así es como se instala HeidiSQL se cuela en una PC
+Al dar clic al botón de siguiente nos mostrara una barra de instalación y un botón para cancelar la instalación.
+Al final de la instalación nos indica Heidi SQL que la instalación fue correcta y se le da clic en finalizar y así es como se instala Heidi SQL se cuela en una PC
 
 
 ## Edición del archivo de configuración
 
-- Creacion de un formulario en la aplicacion para que el usuario pueda configurar una nueva conexion hacia la base de datos que desee conectrase, puede guardar esos datos ya que se almacenaran en un archivo INI y de igual manera podra observar los datos que contiene el archivo INI.
+- Creación de un formulario en la aplicación para que el usuario pueda configurar una nueva conexión hacia la base de datos que desee conectarse, puede guardar esos datos ya que se almacenaran en un archivo INI y de igual manera podrá observar los datos que contiene el archivo INI.
 
 ![config](https://user-images.githubusercontent.com/87662377/144690206-f5162146-81a8-467a-a47b-43c31d2958af.png)
 
@@ -141,7 +139,7 @@ Al final de la instalación nos indica Heidi SQL que la instalación fue correct
 ## Introducción
 El programa **RDS-LogViewer-Console** tiene como finalidad leer los logs que va generando el RDSGateway/WSP en el WEV
 
-El RDSG, al momento de la instalación crea una entrada especial en el Windows EventViewer llamada "HOB WebSecureProxy", en ese repositorio se van a almacenar todos los logs que se van generando.
+El RDSG, al momento de la instalación crea una entrada especial en el Windows EventViewer llamada "HOB WebSecureProxy", en ese repositorio se va a almacenar todos los logs que se van generando.
 
 
 

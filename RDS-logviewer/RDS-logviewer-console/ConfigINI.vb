@@ -57,8 +57,8 @@ Public Class ConfigINI
             WriteINI(CONFIG_FILE, "BD", "dbport", txt_puerto.Text)
             WriteINI(CONFIG_FILE, "BD", "dbuser", txt_usuario.Text)
             WriteINI(CONFIG_FILE, "BD", "dbpassword", txt_password.Text)
-
             MsgBox("Datos Guardados correctamente")
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -92,6 +92,12 @@ Public Class ConfigINI
 
     Private Sub btn_testDB_Connection_Click(sender As Object, e As EventArgs) Handles btn_testDB_Connection.Click
         Dim test As Boolean
+
+        txt_servidor.Text = ReadINI(CONFIG_FILE, "BD", "dbhost")
+        txt_bd.Text = ReadINI(CONFIG_FILE, "BD", "dbschema")
+        txt_puerto.Text = ReadINI(CONFIG_FILE, "BD", "dbport")
+        txt_usuario.Text = ReadINI(CONFIG_FILE, "BD", "dbuser")
+        txt_password.Text = ReadINI(CONFIG_FILE, "BD", "dbpassword")
 
         Dim sqlConn As New MySqlConnection()
 
